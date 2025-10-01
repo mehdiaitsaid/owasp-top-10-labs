@@ -2,6 +2,10 @@
 
 This repository, created by **Pr. AIT SAID Mehdi**, contains a set of **hands-on labs** designed to teach and demonstrate the **OWASP Top 10 Web Application Security Risks**.  
 It is intended for students and professionals learning **application security** through practical examples and exercises.
+
+The labs are also available online at the website: [https://mehdiaitsaid.github.io/owasp-top-10-labs/](https://mehdiaitsaid.github.io/owasp-top-10-labs/)
+
+
 ---
 
 ## 🎯 Objectives
