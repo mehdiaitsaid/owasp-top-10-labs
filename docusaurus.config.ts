@@ -47,7 +47,7 @@ const config: Config = {
                     // Please change this to your repo.
                     // Remove this to remove the "edit this page" links.
                     editUrl:
-                        'https://github.com/mehdiaitsaid/owasp-top-10-labs.git',
+                        'https://github.com/mehdiaitsaid/owasp-top-10-labs/blob/master/',
                 },
                 // blog: {
                 //     showReadingTime: true,
