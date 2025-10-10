@@ -107,7 +107,7 @@ This lab is organized in **three parts** so students can learn step-by-step:
 
 ## 1) Vulnerable PHP page (file: `patient_lookup.php`)
 
-Save the following file in your web root (e.g., `/var/www/html/patient_lookup.php`):
+Save the following file in your web root (e.g., `/src/patient_lookup.php`):
 
 
 ```php
