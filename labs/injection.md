@@ -648,5 +648,5 @@ Produce a single PDF that contains everything and submit it.
 ## Submission (single PDF only)
 
 Create **one** PDF file and submit it via the Google Form link below (demo — replace later):  
-**https://forms.gle/DEMO_LINK_REPLACE_LATER**
+**https://docs.google.com/forms/d/e/1FAIpQLSfy5WQdFYPU28b84C4wR7wW4SyCi_1S6q9KRgrHi1Sj3vLQwA/viewform?usp=header**
 
