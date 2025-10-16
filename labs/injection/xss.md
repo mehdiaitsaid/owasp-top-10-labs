@@ -297,9 +297,9 @@ Objective: practice changing a cookie value locally in Chrome so you can observe
 3. Refresh the application page and observe whether the server treats your session as a different user (may require server-side behavior that accepts simple token values).
 4. Optionally, repeat the collector attack (Tasks 3–4) while the cookie has been swapped to observe whether the collector shows different session-related data.
 
-Demonstration
+**Demonstration**
 
-[Cookie-theft.mp4](../videos/Cookie-theft.mp4)
+[Cookie-theft.mp4]()
 
 ## Fixing XSS — printing user data safely & validating on submit
 
