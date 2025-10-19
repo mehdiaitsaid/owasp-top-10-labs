@@ -567,11 +567,11 @@ INSERT INTO roles (name, description, created_at) VALUES
 
 INSERT INTO users (role_id, email, password_hash, full_name, phone, is_active, created_at, updated_at) VALUES
                                                                                                            (1, 'admin@lab.local
-', '$2y$10$ABCDEFGHexamplehashadmin1234567890', 'Lab Admin', '+212600000001', 1, NOW(), NOW()),
+', '123456', 'Lab Admin', '+212600000001', 1, NOW(), NOW()),
                                                                                                            (2, 'doc.alice@lab.local
-', '$2y$10$ABCDEFGHexamplehashdoc1234567890', 'Dr. Alice', '+212600000002', 1, NOW(), NOW()),
+', '123456', 'Dr. Alice', '+212600000002', 1, NOW(), NOW()),
                                                                                                            (3, 'nurse.bob@lab.local
-', '$2y$10$ABCDEFGHexamplehashnurse123456789', 'Nurse Bob', '+212600000003', 1, NOW(), NOW());
+', '123456', 'Nurse Bob', '+212600000003', 1, NOW(), NOW());
 
 INSERT INTO patients (medical_record_number, first_name, last_name, dob, gender, phone, email, address, emergency_contact_name, emergency_contact_phone, created_at, updated_at) VALUES
                                                                                                                                                                                      ('MRN0001','John','Doe','1980-01-01','male','+212610000001','john.doe@example.local
