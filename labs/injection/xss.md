@@ -67,7 +67,7 @@ Core idea: Untrusted input → inserted into HTML/JS/CSS context → browser exe
 
 
 
-# Learning objectives for this lab
+## Learning objectives for this lab
 
 * Identify where untrusted input reaches the rendered page (attack surface mapping).
 * Differentiate reflected, stored, and DOM XSS in practice.
@@ -75,7 +75,7 @@ Core idea: Untrusted input → inserted into HTML/JS/CSS context → browser exe
 * Implement and verify mitigations: contextual output encoding, safe DOM APIs, sanitization, and CSP.
 * Appreciate responsible disclosure and safe lab practices (only test in authorized environments).
 
-# Lab Use Case — Attack Scenario (Forum comment stored XSS)
+## Lab Use Case — Attack Scenario (Forum comment stored XSS)
 
 In this lab we’ll demonstrate a stored XSS attack in a simple forum by injecting JavaScript into the comments field. Students will see three concrete effects in a controlled environment:
 1. executing visible messages in the victim’s browser (e.g., alert()),
@@ -84,13 +84,13 @@ In this lab we’ll demonstrate a stored XSS attack in a simple forum by injecti
 
 After the attack exercises, students will implement and verify mitigations using frontend and backend validation, and learn how to safely integrate and validate content from a rich-text editor (for example, CKEditor) on the server side.
 
-## Scenario overview
+### Scenario overview
 
 Attacker (student A) logs in and posts a comment containing a malicious payload (stored in the database).
 
 Victim (student B) visits the post page; the page renders the stored comment and the injected script runs in the victim’s browser.
 
-### Observed effects (demonstrations):
+#### Observed effects (demonstrations):
 
 * Message: a simple `alert('XSS')` shows that code executed.
 * DOM modification: injected script inserts or replaces page elements (e.g., adds a banner or form).
@@ -391,7 +391,7 @@ Principle: Validate shape and content; sanitize only what's necessary.
 
 
 
-### Mini Project — Rich-Text Forum (Homework)
+## Mini Project — Rich-Text Forum (Homework)
 
 Objective:
 Build a forum app with rich-text comments (CKEditor/Quill or similar). Provide two versions: vulnerable (stores & renders raw HTML) and fixed (sanitizes + hardens). Demonstrate the XSS problem and the fix.
