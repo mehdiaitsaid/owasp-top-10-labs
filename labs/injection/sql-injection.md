@@ -4,7 +4,7 @@ sidebar_position: 1
 ---
 # SQL Injection
 
-**Overview**  
+**Overview:**  
 SQL Injection (SQLi) is one of the oldest and most dangerous web application vulnerabilities. It occurs when an application includes untrusted input in an SQL query without proper validation or parameterization, allowing an attacker to alter the intended SQL command. In a lab context we use controlled vulnerable examples to learn how SQLi works, its impact, and how to prevent it.
 
 > ⚠️ **Important:** This lab is for educational, legal, and controlled environments only. Do **not** apply these techniques against systems you do not own or do not have explicit permission to test.
